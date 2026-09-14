@@ -3,10 +3,7 @@
 // no-backend-required form relay: it accepts a plain POST from a static page
 // and emails the submission, no server or signup flow required to try it.
 //
-// IMPORTANT: WEB3FORMS_ACCESS_KEY below is a placeholder. Get a real, free
-// access key at https://web3forms.com (takes ~30 seconds, just an email
-// address) and swap it in before going live — see README.md.
-const WEB3FORMS_ACCESS_KEY = 'YOUR_WEB3FORMS_ACCESS_KEY';
+const WEB3FORMS_ACCESS_KEY = '3e8bc03f-2b1f-4d46-8b80-5dd99982ce77';
 ---
 
 <form id="contact-form" class="space-y-5" data-access-key={WEB3FORMS_ACCESS_KEY}>
@@ -88,7 +85,7 @@ const WEB3FORMS_ACCESS_KEY = 'YOUR_WEB3FORMS_ACCESS_KEY';
     const accessKey = form.dataset.accessKey;
     if (!accessKey || accessKey === 'YOUR_WEB3FORMS_ACCESS_KEY') {
       statusEl.textContent =
-        'Form isn’t wired up yet — email us directly at hello@tradingyantra.in, or see README.md to add a free Web3Forms key.';
+        'Form isn’t wired up yet — email us directly at aitradingyantra@gmail.com, or see README.md to add a free Web3Forms key.';
       statusEl.className = 'text-sm font-medium text-amber-400';
       return;
     }
@@ -114,7 +111,7 @@ const WEB3FORMS_ACCESS_KEY = 'YOUR_WEB3FORMS_ACCESS_KEY';
         throw new Error(result.message || 'Submission failed');
       }
     } catch (err) {
-      statusEl.textContent = 'Something went wrong. Please email hello@tradingyantra.in instead.';
+      statusEl.textContent = 'Something went wrong. Please email aitradingyantra@gmail.com instead.';
       statusEl.className = 'text-sm font-medium text-rose-400';
     } finally {
       submitLabel.textContent = originalLabel;
