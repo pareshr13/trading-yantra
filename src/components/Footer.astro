@@ -13,10 +13,13 @@ const { lang, t } = Astro.props;
 const year = new Date().getFullYear();
 
 const productLinks = [
-  { href: '/product#ai-signals', label: t.footer.productLinks[0] },
-  { href: '/product#indicators', label: t.footer.productLinks[1] },
-  { href: '/product#candlestick', label: t.footer.productLinks[2] },
-  { href: '/product#patterns', label: t.footer.productLinks[3] },
+  { href: localizedPath(lang, '/product#ai-signals'), label: t.footer.productLinks[0] },
+  { href: localizedPath(lang, '/product#indicators'), label: t.footer.productLinks[1] },
+  { href: localizedPath(lang, '/product#candlestick'), label: t.footer.productLinks[2] },
+  { href: localizedPath(lang, '/product#patterns'), label: t.footer.productLinks[3] },
+  // English-only page (see plan) — hardcoded label/href rather than routed
+  // through the dictionary, same pattern as the legal links below.
+  { href: localizedPath('en', '/algo-trading'), label: 'Algo Trading (Coming Soon)' },
 ];
 
 const companyLinks = [
@@ -54,7 +57,7 @@ const legalLinks = [
         <h3 class="text-xs font-bold uppercase tracking-widest text-slate-500">{t.footer.productHeading}</h3>
         <ul class="mt-4 space-y-3">
           {productLinks.map((link) => (
-            <li><a href={localizedPath(lang, link.href)} class="text-sm text-slate-300 hover:text-white transition-colors">{link.label}</a></li>
+            <li><a href={link.href} class="text-sm text-slate-300 hover:text-white transition-colors">{link.label}</a></li>
           ))}
         </ul>
       </div>

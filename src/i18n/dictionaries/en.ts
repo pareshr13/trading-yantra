@@ -99,6 +99,11 @@ export interface Dictionary {
     statsLinkText: string;
     ctaBannerTitle: string;
     ctaBannerBody: string;
+    /** Optional — only populated in English for now (see /algo-trading).
+     * hi/mr/gu leave this undefined until translated, and the teaser
+     * simply doesn't render on those locales rather than showing partial
+     * English inside a translated page. */
+    comingSoonTeaser?: { badge: string; title: string; body: string; cta: string };
   };
   about: {
     pill: string;
@@ -135,6 +140,8 @@ export interface Dictionary {
     faqs: [Faq, Faq, Faq, Faq, Faq, Faq];
     ctaTitle: string;
     ctaBody: string;
+    /** Optional — English-only for now, same reasoning as home.comingSoonTeaser. */
+    comingSoon?: { badge: string; title: string; body: string; cta: string };
   };
   contact: {
     pill: string;
@@ -273,6 +280,12 @@ export const en: Dictionary = {
     statsLinkText: 'Read our disclaimer',
     ctaBannerTitle: 'Trade smarter, not harder.',
     ctaBannerBody: 'Join our free waitlist. We’ll message you the moment Trading Yantra is ready for you.',
+    comingSoonTeaser: {
+      badge: 'Coming Soon',
+      title: 'Signals that can place the trade for you.',
+      body: 'We’re building direct, secure connections to India’s most-used trading platforms — so an AI signal can become an actual order, with limits you control.',
+      cta: 'See what’s coming',
+    },
   },
   about: {
     pill: 'About Us',
@@ -395,6 +408,12 @@ export const en: Dictionary = {
     ],
     ctaTitle: 'Ready to trade with confidence?',
     ctaBody: 'Join our free waitlist for early access to Trading Yantra — AI predictions, simple signals, and chart pattern alerts, all in one place.',
+    comingSoon: {
+      badge: 'Coming Soon',
+      title: 'Algo Trading',
+      body: 'Planned direct integration with India’s major trading platforms, so a signal can become an order automatically — with limits you set.',
+      cta: 'Learn more',
+    },
   },
   contact: {
     pill: 'Get In Touch',
