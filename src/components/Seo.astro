@@ -19,7 +19,7 @@ const {
   jsonLd = [],
 } = Astro.props;
 
-const siteUrl = Astro.site ?? new URL('https://tradingyantra.in');
+const siteUrl = Astro.site ?? new URL('https://tradingyantra.com');
 const canonicalURL = new URL(path, siteUrl);
 const ogImageURL = new URL(image, siteUrl);
 const fullTitle = title.includes('Trading Yantra') ? title : `${title} | Trading Yantra`;
