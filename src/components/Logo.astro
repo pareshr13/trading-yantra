@@ -5,6 +5,8 @@
 // separate. Square icon crop for compact placements (header/footer); the
 // full wide banner (icon + its own candlestick chart) is available via
 // variant="banner" for larger showcase placements (e.g. a hero).
+import { withBase } from '../utils/url';
+
 interface Props {
   variant?: 'full' | 'mark' | 'banner';
   class?: string;
@@ -16,7 +18,7 @@ const { variant = 'full', class: className = '', markSize = 40 } = Astro.props;
 
 {variant === 'banner' ? (
   <img
-    src="/brand/trading-yantra-mark.png"
+    src={withBase('/brand/trading-yantra-mark.png')}
     alt="Trading Yantra — AI stock analysis"
     class={`h-auto w-full max-w-md ${className}`}
     width="896"
@@ -25,7 +27,7 @@ const { variant = 'full', class: className = '', markSize = 40 } = Astro.props;
 ) : (
   <div class={`inline-flex items-center gap-2.5 ${className}`}>
     <img
-      src="/brand/robot-head-512.png"
+      src={withBase('/brand/robot-head-512.png')}
       alt="Trading Yantra mark"
       class="shrink-0 object-contain drop-shadow-[0_0_10px_rgba(45,212,191,0.25)]"
       style={`height:${markSize}px;width:${markSize}px;`}

@@ -1,4 +1,6 @@
 ---
+import { withBase } from '../utils/url';
+
 interface Props {
   title: string;
   description: string;
@@ -11,8 +13,8 @@ interface Props {
 const {
   title,
   description,
-  path = '/',
-  image = '/og-image.png',
+  path = withBase('/'),
+  image = withBase('/og-image.png'),
   noindex = false,
   jsonLd = [],
 } = Astro.props;
@@ -27,7 +29,7 @@ const orgSchema = {
   '@type': 'Organization',
   name: 'Trading Yantra',
   url: siteUrl.toString(),
-  logo: new URL('/logo/logo-512.png', siteUrl).toString(),
+  logo: new URL(withBase('/logo/logo-512.png'), siteUrl).toString(),
   description:
     'Trading Yantra builds AI and machine-learning powered stock analysis tools for NSE and BSE retail traders — technical indicators, candlestick and chart-pattern intelligence, and transparently backtested signals.',
   sameAs: [],

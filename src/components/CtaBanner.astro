@@ -1,4 +1,6 @@
 ---
+import { withBase } from '../utils/url';
+
 interface Props {
   title: string;
   description: string;
@@ -12,9 +14,9 @@ const {
   title,
   description,
   primaryLabel = 'Get Early Access',
-  primaryHref = '/contact',
+  primaryHref = withBase('/contact'),
   secondaryLabel = 'Explore the Product',
-  secondaryHref = '/product',
+  secondaryHref = withBase('/product'),
 } = Astro.props;
 ---
 

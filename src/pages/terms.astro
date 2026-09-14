@@ -1,11 +1,12 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { withBase } from '../utils/url';
 
 const title = 'Terms of Service';
 const description = 'The terms governing your use of the Trading Yantra website and product.';
 ---
 
-<BaseLayout title={title} description={description} path="/terms">
+<BaseLayout title={title} description={description}>
   <section class="mx-auto max-w-3xl px-4 py-16 sm:px-6 sm:py-20 lg:px-8">
     <h1 class="text-4xl font-extrabold tracking-tight text-white">Terms of Service</h1>
     <p class="mt-3 text-sm text-slate-500">Last updated: September 2026</p>
@@ -28,7 +29,7 @@ const description = 'The terms governing your use of the Trading Yantra website 
         Content on this site — including feature descriptions, statistics, and illustrative
         product previews — is provided for general information only and does not constitute
         investment advice. See our
-        <a href="/disclaimer" class="text-teal-300 underline hover:text-teal-200">Risk Disclaimer</a>
+        <a href={withBase('/disclaimer')} class="text-teal-300 underline hover:text-teal-200">Risk Disclaimer</a>
         for full detail.
       </p>
 

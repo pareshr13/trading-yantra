@@ -1,11 +1,12 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { withBase } from '../utils/url';
 
 const title = 'Page Not Found';
 const description = 'The page you’re looking for doesn’t exist.';
 ---
 
-<BaseLayout title={title} description={description} path="/404" noindex>
+<BaseLayout title={title} description={description} noindex>
   <section class="relative overflow-hidden">
     <div class="pointer-events-none absolute inset-x-0 top-0 h-[420px] bg-radial-fade"></div>
     <div class="relative mx-auto flex min-h-[70vh] max-w-2xl flex-col items-center justify-center px-4 py-20 text-center sm:px-6">
@@ -17,10 +18,10 @@ const description = 'The page you’re looking for doesn’t exist.';
         The page you're looking for doesn't exist or may have moved. Let's get you back on trend.
       </p>
       <div class="mt-8 flex flex-col gap-3 sm:flex-row">
-        <a href="/" class="inline-flex items-center justify-center rounded-lg bg-gradient-brand px-6 py-3 text-sm font-bold text-ink transition-transform hover:scale-[1.02]">
+        <a href={withBase('/')} class="inline-flex items-center justify-center rounded-lg bg-gradient-brand px-6 py-3 text-sm font-bold text-ink transition-transform hover:scale-[1.02]">
           Back to Home
         </a>
-        <a href="/product" class="inline-flex items-center justify-center rounded-lg border border-line px-6 py-3 text-sm font-bold text-slate-200 transition-colors hover:border-teal-500/40 hover:text-white">
+        <a href={withBase('/product')} class="inline-flex items-center justify-center rounded-lg border border-line px-6 py-3 text-sm font-bold text-slate-200 transition-colors hover:border-teal-500/40 hover:text-white">
           Explore the Product
         </a>
       </div>

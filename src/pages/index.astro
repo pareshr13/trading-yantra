@@ -4,13 +4,14 @@ import CandlestickHero from '../components/CandlestickHero.astro';
 import FeatureCard from '../components/FeatureCard.astro';
 import StatCounter from '../components/StatCounter.astro';
 import CtaBanner from '../components/CtaBanner.astro';
+import { withBase } from '../utils/url';
 
 const title = 'AI Stock Analysis & Swing Trading Signals for NSE & BSE';
 const description =
   'Trading Yantra combines AI/ML models, technical indicators, and candlestick pattern intelligence to help retail traders analyse NSE & BSE stocks — with every signal backed by measured, published results.';
 ---
 
-<BaseLayout title={title} description={description} path="/">
+<BaseLayout title={title} description={description}>
   <!-- Hero -->
   <section class="relative overflow-hidden">
     <div class="pointer-events-none absolute inset-x-0 top-0 h-[520px] bg-radial-fade"></div>
@@ -29,16 +30,16 @@ const description =
           shows, including the patterns that <em class="text-slate-300 not-italic font-semibold">don't</em> work.
         </p>
         <div class="fade-in-up mt-8 flex flex-col gap-3 sm:flex-row" style="animation-delay:0.15s">
-          <a href="/contact" class="inline-flex items-center justify-center rounded-lg bg-gradient-brand px-6 py-3.5 text-sm font-bold text-ink shadow-lg shadow-teal-500/10 transition-transform hover:scale-[1.02]">
+          <a href={withBase('/contact')} class="inline-flex items-center justify-center rounded-lg bg-gradient-brand px-6 py-3.5 text-sm font-bold text-ink shadow-lg shadow-teal-500/10 transition-transform hover:scale-[1.02]">
             Get Early Access
           </a>
-          <a href="/product" class="inline-flex items-center justify-center rounded-lg border border-line px-6 py-3.5 text-sm font-bold text-slate-200 transition-colors hover:border-teal-500/40 hover:text-white">
+          <a href={withBase('/product')} class="inline-flex items-center justify-center rounded-lg border border-line px-6 py-3.5 text-sm font-bold text-slate-200 transition-colors hover:border-teal-500/40 hover:text-white">
             See How It Works
           </a>
         </div>
         <p class="fade-in-up mt-5 text-xs text-slate-500" style="animation-delay:0.2s">
           Educational &amp; informational tool. Not SEBI-registered investment advice. See our
-          <a href="/disclaimer" class="underline hover:text-slate-300">risk disclaimer</a>.
+          <a href={withBase('/disclaimer')} class="underline hover:text-slate-300">risk disclaimer</a>.
         </p>
       </div>
 
@@ -185,7 +186,7 @@ const description =
         <p class="mt-8 text-xs leading-relaxed text-slate-500">
           These are product counts, not performance promises. Past performance and backtested
           results don't guarantee future returns — see our
-          <a href="/disclaimer" class="underline hover:text-slate-300">risk disclaimer</a>.
+          <a href={withBase('/disclaimer')} class="underline hover:text-slate-300">risk disclaimer</a>.
         </p>
       </div>
     </div>
