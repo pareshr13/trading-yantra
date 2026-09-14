@@ -4,6 +4,7 @@
 // and emails the submission, no server or signup flow required to try it.
 import type { Dictionary } from '../i18n/dictionaries';
 import type { Locale } from '../i18n/config';
+import { localizedPath } from '../i18n/url';
 
 interface Props {
   lang: Locale;
@@ -76,6 +77,11 @@ const WEB3FORMS_ACCESS_KEY = '3e8bc03f-2b1f-4d46-8b80-5dd99982ce77';
       placeholder={f.formMessagePlaceholder}
     ></textarea>
   </div>
+
+  <p class="text-xs leading-relaxed text-slate-400">
+    {f.formConsentNote}{' '}
+    <a href={localizedPath('en', '/privacy-policy')} class="underline hover:text-slate-300">{f.formConsentLinkText}</a>.
+  </p>
 
   <button
     type="submit"

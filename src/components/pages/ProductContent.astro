@@ -12,13 +12,14 @@ interface Props {
 const { lang, t } = Astro.props;
 const p = t.product;
 
-// Illustrative example alerts on the watchlist section — labels only
-// (BULLISH/BEARISH/WATCH tags) stay in English/ticker style since that's how
-// they'd render in the real product regardless of UI language.
+// Illustrative example alerts on the watchlist section — descriptive
+// technical events (not buy/sell calls), and labels stay in English/ticker
+// style since that's how they'd render in the real product regardless of UI
+// language.
 const watchlistExamples = [
-  { tag: 'BULLISH', symbol: 'HDFCBANK' },
-  { tag: 'WATCH', symbol: 'TCS' },
-  { tag: 'BEARISH', symbol: 'ZOMATO' },
+  { tag: 'ABOVE 50-DMA', symbol: 'HDFCBANK' },
+  { tag: 'RSI OVERSOLD', symbol: 'TCS' },
+  { tag: 'VOLUME SPIKE', symbol: 'ZOMATO' },
 ];
 ---
 
@@ -92,9 +93,7 @@ const watchlistExamples = [
       {watchlistExamples.map((a) => (
         <div class="flex items-center justify-between rounded-xl border border-line bg-surface px-4 py-3.5">
           <div class="flex items-center gap-3">
-            <span class={`rounded px-2 py-1 text-[10px] font-extrabold uppercase ${
-              a.tag === 'BULLISH' ? 'bg-emerald-950 text-emerald-300' : a.tag === 'BEARISH' ? 'bg-rose-950 text-rose-300' : 'bg-amber-950 text-amber-300'
-            }`}>{a.tag}</span>
+            <span class="rounded bg-teal-950 px-2 py-1 text-[10px] font-extrabold uppercase text-teal-300">{a.tag}</span>
             <span class="font-mono text-sm font-bold text-white">{a.symbol}</span>
           </div>
         </div>
