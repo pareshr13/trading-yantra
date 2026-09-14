@@ -1,0 +1,75 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const title = 'Risk Disclaimer';
+const description = 'Important risk and no-advice disclaimer for Trading Yantra, an AI-powered stock analysis and informational tool for NSE & BSE traders.';
+---
+
+<BaseLayout title={title} description={description} path="/disclaimer">
+  <section class="mx-auto max-w-3xl px-4 py-16 sm:px-6 sm:py-20 lg:px-8">
+    <h1 class="text-4xl font-extrabold tracking-tight text-white">Risk Disclaimer</h1>
+    <p class="mt-3 text-sm text-slate-500">Last updated: September 2026</p>
+
+    <div class="prose-invert mt-10 space-y-6 text-sm leading-relaxed text-slate-300">
+      <p>
+        Trading Yantra ("we", "us", "our") provides technology-driven stock market analysis,
+        including technical indicators, candlestick and chart-pattern detection, and AI/ML-generated
+        signals, for informational and educational purposes only.
+      </p>
+
+      <h2 class="pt-4 text-lg font-bold text-white">Not investment advice</h2>
+      <p>
+        Trading Yantra is not a SEBI-registered investment adviser, research analyst, or stock
+        broker. Nothing on this website or within the product constitutes personalised investment
+        advice, a recommendation, or a solicitation to buy or sell any security. Any signal,
+        indicator, pattern detection, or AI/ML output is a data-driven observation, not a
+        prediction of future price movement and not tailored to your individual financial
+        situation.
+      </p>
+
+      <h2 class="pt-4 text-lg font-bold text-white">Market risk</h2>
+      <p>
+        Investments and trades in equities and other securities are subject to market risk.
+        Prices can and do move against expectations, and it is possible to lose part or all of an
+        investment. You are solely responsible for your own trading and investment decisions,
+        including deciding whether and how to act on any information provided by Trading Yantra.
+      </p>
+
+      <h2 class="pt-4 text-lg font-bold text-white">Backtested & historical results</h2>
+      <p>
+        Any statistics, backtests, or measured results referenced by Trading Yantra reflect
+        historical data and a specific methodology at a point in time. Backtested performance
+        has inherent limitations — including the risk of overfitting to past data — and does not
+        represent actual trading. Past performance, whether real or simulated, is not indicative
+        of future results.
+      </p>
+
+      <h2 class="pt-4 text-lg font-bold text-white">Third-party data & broker connections</h2>
+      <p>
+        Trading Yantra may source market data from third-party providers and, where you choose to
+        connect a brokerage account, may interact with that broker's systems on your instruction.
+        We are not responsible for the accuracy, availability, or timeliness of third-party data,
+        or for the acts or omissions of any third-party broker.
+      </p>
+
+      <h2 class="pt-4 text-lg font-bold text-white">No liability</h2>
+      <p>
+        To the maximum extent permitted by law, Trading Yantra and its team disclaim liability
+        for any loss or damage — direct, indirect, incidental, or consequential — arising from
+        the use of, or reliance on, this website or the product, including trading losses.
+      </p>
+
+      <h2 class="pt-4 text-lg font-bold text-white">Consult a professional</h2>
+      <p>
+        Please consult a SEBI-registered investment adviser or financial professional before
+        making investment decisions. If any part of this disclaimer is unclear, contact us before
+        using the product.
+      </p>
+
+      <p class="pt-4 text-slate-400">
+        Questions about this disclaimer? Reach us at
+        <a href="mailto:hello@tradingyantra.in" class="text-teal-300 underline hover:text-teal-200">hello@tradingyantra.in</a>.
+      </p>
+    </div>
+  </section>
+</BaseLayout>

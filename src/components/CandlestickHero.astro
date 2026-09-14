@@ -1,0 +1,71 @@
+---
+// Pure CSS/SVG hero visual — an ascending candlestick series with a glowing
+// trendline, echoing AlgoSignal's own logo animation. No JS, no image
+// request: this is the single biggest visual on the Home page and it ships
+// as ~1.5kb of inline markup.
+const candles = [
+  { x: 10, h: 46, y: 130, bull: true, anim: 'candle-anim-2' },
+  { x: 46, h: 66, y: 98, bull: true, anim: 'candle-anim-1' },
+  { x: 82, h: 34, y: 148, bull: false, anim: 'candle-anim-3' },
+  { x: 118, h: 78, y: 78, bull: true, anim: 'candle-anim-4' },
+  { x: 154, h: 52, y: 118, bull: false, anim: 'candle-anim-5' },
+  { x: 190, h: 96, y: 52, bull: true, anim: 'candle-anim-1' },
+  { x: 226, h: 70, y: 90, bull: true, anim: 'candle-anim-6' },
+  { x: 262, h: 112, y: 24, bull: true, anim: 'candle-anim-2' },
+];
+---
+
+<div class="relative mx-auto aspect-[4/3] w-full max-w-lg">
+  <div class="absolute inset-0 rounded-3xl bg-radial-fade"></div>
+  <div class="absolute inset-0 rounded-3xl border border-line bg-surface/40 backdrop-blur-sm"></div>
+
+  <svg viewBox="0 0 300 220" class="relative h-full w-full p-6" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <!-- grid -->
+    <g stroke="#1f2944" stroke-width="1">
+      <line x1="0" y1="55" x2="300" y2="55" />
+      <line x1="0" y1="110" x2="300" y2="110" />
+      <line x1="0" y1="165" x2="300" y2="165" />
+    </g>
+
+    <!-- trendline -->
+    <path
+      d="M18 150 C 70 110, 110 130, 150 90 S 230 60, 285 34"
+      fill="none"
+      stroke="#2dd4bf"
+      stroke-width="2"
+      stroke-dasharray="6 6"
+      class="trendline-anim"
+    />
+
+    {candles.map((c) => (
+      <g class={c.anim}>
+        <line x1={c.x + 8} y1={c.y - 8} x2={c.x + 8} y2={c.y + c.h + 8} stroke={c.bull ? '#2dd4bf' : '#fb7185'} stroke-width="2" stroke-linecap="round" />
+        <rect
+          x={c.x}
+          y={c.y}
+          width="16"
+          height={c.h}
+          rx="2.5"
+          fill={c.bull ? '#34d399' : '#fb7185'}
+          fill-opacity={c.bull ? '0.9' : '0.85'}
+        />
+      </g>
+    ))}
+  </svg>
+
+  <div class="absolute -bottom-4 -left-4 rounded-xl border border-line bg-surface px-4 py-3 shadow-xl sm:-bottom-6 sm:-left-6">
+    <p class="font-mono text-[10px] uppercase tracking-widest text-slate-500">Sample AI signal</p>
+    <p class="mt-1 flex items-center gap-1.5 text-lg font-bold text-teal-300">
+      <span class="h-2 w-2 rounded-full bg-teal-400 pulse-soft"></span>
+      Strong Buy
+    </p>
+  </div>
+
+  <div class="absolute -top-4 -right-4 rounded-xl border border-line bg-surface px-4 py-3 shadow-xl sm:-top-6 sm:-right-6">
+    <p class="font-mono text-[10px] uppercase tracking-widest text-slate-500">Market regime</p>
+    <p class="mt-1 flex items-center gap-1.5 text-sm font-bold text-emerald-300">
+      <span class="h-2 w-2 rounded-full bg-emerald-400 pulse-soft"></span>
+      Trending Bull
+    </p>
+  </div>
+</div>

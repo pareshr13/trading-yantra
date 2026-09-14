@@ -1,0 +1,122 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import CtaBanner from '../components/CtaBanner.astro';
+import FeatureCard from '../components/FeatureCard.astro';
+
+const title = 'About Us';
+const description =
+  'Trading Yantra is built by traders who wanted a stock analysis tool that reports measured evidence honestly — including when a popular pattern has no real edge.';
+---
+
+<BaseLayout title={title} description={description} path="/about">
+  <section class="relative overflow-hidden border-b border-line">
+    <div class="pointer-events-none absolute inset-x-0 top-0 h-[420px] bg-radial-fade"></div>
+    <div class="relative mx-auto max-w-4xl px-4 py-20 text-center sm:px-6 sm:py-28 lg:px-8">
+      <p class="inline-flex items-center gap-2 rounded-full border border-line bg-surface px-3.5 py-1.5 text-xs font-semibold text-teal-300">
+        <span class="h-1.5 w-1.5 rounded-full bg-teal-400"></span>
+        About Trading Yantra
+      </p>
+      <h1 class="mt-6 text-4xl font-extrabold tracking-tight text-white sm:text-5xl">
+        A "yantra" is an instrument. <span class="text-gradient-brand">So is this.</span>
+      </h1>
+      <p class="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-slate-400">
+        In Sanskrit, a <em class="text-slate-300 not-italic font-semibold">yantra</em> is a precise
+        geometric instrument built for a single purpose. Ours is built to turn raw NSE &amp; BSE
+        market data into a signal a retail trader can actually reason about.
+      </p>
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-4xl px-4 py-20 sm:px-6 lg:px-8">
+    <div class="prose-invert space-y-6 text-slate-300">
+      <h2 class="text-2xl font-bold text-white">Why we built this</h2>
+      <p class="leading-relaxed">
+        Retail traders in India are not short on tools. They're short on tools that tell the truth
+        about themselves. Most signal services show you the win streak and quietly bury the losing
+        stretch. Most "AI-powered" trading apps treat the model as a black box and ask you to trust
+        the output on faith.
+      </p>
+      <p class="leading-relaxed">
+        Trading Yantra started from a simpler premise: build the kind of analysis tool we'd actually
+        want to trade with ourselves — one where every rule, pattern and model signal is backed by a
+        measurement we can point to, and where a negative result is reported as clearly as a positive
+        one.
+      </p>
+
+      <h2 class="pt-6 text-2xl font-bold text-white">How we approach the problem</h2>
+      <p class="leading-relaxed">
+        We combine three layers instead of leaning on any single one:
+      </p>
+      <ul class="list-disc space-y-2 pl-5 marker:text-teal-400">
+        <li>
+          <strong class="text-white">A technical indicator engine</strong> — RSI, EMA, ADX, ATR,
+          Bollinger Bands and Williams %R computed daily and screened into buy/sell signals.
+        </li>
+        <li>
+          <strong class="text-white">A candlestick &amp; price-action engine</strong> — twelve
+          candlestick detectors plus a point-in-time context model (trend, pullback,
+          support/resistance, volume, relative strength, volatility and market regime) that scores
+          every pattern <em>in context</em>, benchmarked against an unconditional baseline.
+        </li>
+        <li>
+          <strong class="text-white">AI/ML models</strong> — trained on historical NSE/BSE price
+          action to surface signals that classic rule-based indicators can miss.
+        </li>
+      </ul>
+      <p class="leading-relaxed">
+        None of these three layers is presented as infallible. Each is a hypothesis that gets tested
+        against real, measured outcomes — and the product reflects what the testing actually shows,
+        not what would be easiest to market.
+      </p>
+
+      <h2 class="pt-6 text-2xl font-bold text-white">What "radical honesty" means in practice</h2>
+      <p class="leading-relaxed">
+        Concretely: when our research shows that a popular chart-pattern breakout underperforms a
+        random baseline, that finding ships in the product's own documentation instead of being
+        quietly dropped. When a market regime looks unfavorable, the product can shrink or veto
+        position sizing rather than firing a signal blind to the broader trend. We'd rather be useful
+        than impressive.
+      </p>
+    </div>
+  </section>
+
+  <section class="border-y border-line bg-ink-soft">
+    <div class="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
+      <div class="mx-auto max-w-2xl text-center">
+        <h2 class="text-3xl font-extrabold tracking-tight text-white sm:text-4xl">What we stand for</h2>
+      </div>
+      <div class="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-3">
+        <FeatureCard
+          icon="shield"
+          title="Evidence over hype"
+          description="Every signal traces back to a measured result. If something doesn't work, we say so — in the product, not just the fine print."
+        />
+        <FeatureCard
+          icon="chart-pattern"
+          title="Context over rules"
+          description="A pattern in isolation means little. We score trend, volume, support/resistance and regime together before calling a signal."
+        />
+        <FeatureCard
+          icon="bell"
+          title="Risk-aware by design"
+          description="Position sizing responds to market regime instead of treating every signal as equally safe to act on."
+        />
+      </div>
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-4xl px-4 py-16 text-center sm:px-6 lg:px-8">
+    <h2 class="text-2xl font-bold text-white">Before you rely on anything here</h2>
+    <p class="mx-auto mt-4 max-w-xl text-sm leading-relaxed text-slate-400">
+      Trading Yantra is a technology and analytics product, not a SEBI-registered investment adviser,
+      and nothing on this site or in the product is personalised investment advice. Please read our
+      <a href="/disclaimer" class="text-teal-300 underline hover:text-teal-200">full risk disclaimer</a>
+      before making any trading decision.
+    </p>
+  </section>
+
+  <CtaBanner
+    title="Want to see the evidence for yourself?"
+    description="Get early access and explore the technical, candlestick and AI/ML signals we've built — and the measured research behind them."
+  />
+</BaseLayout>

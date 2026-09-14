@@ -1,0 +1,68 @@
+---
+interface Props {
+  title: string;
+  description: string;
+  path?: string;
+  image?: string;
+  noindex?: boolean;
+  jsonLd?: Record<string, any>[];
+}
+
+const {
+  title,
+  description,
+  path = '/',
+  image = '/og-image.png',
+  noindex = false,
+  jsonLd = [],
+} = Astro.props;
+
+const siteUrl = Astro.site ?? new URL('https://tradingyantra.in');
+const canonicalURL = new URL(path, siteUrl);
+const ogImageURL = new URL(image, siteUrl);
+const fullTitle = title.includes('Trading Yantra') ? title : `${title} | Trading Yantra`;
+
+const orgSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: 'Trading Yantra',
+  url: siteUrl.toString(),
+  logo: new URL('/logo/logo-512.png', siteUrl).toString(),
+  description:
+    'Trading Yantra builds AI and machine-learning powered stock analysis tools for NSE and BSE retail traders — technical indicators, candlestick and chart-pattern intelligence, and transparently backtested signals.',
+  sameAs: [],
+};
+
+const siteSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: 'Trading Yantra',
+  url: siteUrl.toString(),
+};
+
+const schemas = [orgSchema, siteSchema, ...jsonLd];
+---
+
+<title>{fullTitle}</title>
+<meta name="description" content={description} />
+<link rel="canonical" href={canonicalURL} />
+{noindex && <meta name="robots" content="noindex, nofollow" />}
+
+<!-- Open Graph -->
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="Trading Yantra" />
+<meta property="og:title" content={fullTitle} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={canonicalURL} />
+<meta property="og:image" content={ogImageURL} />
+<meta property="og:locale" content="en_IN" />
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={fullTitle} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={ogImageURL} />
+
+{schemas.map((schema) => (
+  <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+))}

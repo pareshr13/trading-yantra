@@ -1,0 +1,47 @@
+---
+// Trading Yantra mark: the AI-robot-head + candlestick artwork shared with
+// the AlgoSignal product (ai-stock-analyser/frontend/public/logo512.png),
+// copied into this project's own public/brand/ so the codebase stays fully
+// separate. Square icon crop for compact placements (header/footer); the
+// full wide banner (icon + its own candlestick chart) is available via
+// variant="banner" for larger showcase placements (e.g. a hero).
+interface Props {
+  variant?: 'full' | 'mark' | 'banner';
+  class?: string;
+  markSize?: number;
+}
+
+const { variant = 'full', class: className = '', markSize = 40 } = Astro.props;
+---
+
+{variant === 'banner' ? (
+  <img
+    src="/brand/trading-yantra-mark.png"
+    alt="Trading Yantra — AI stock analysis"
+    class={`h-auto w-full max-w-md ${className}`}
+    width="896"
+    height="363"
+  />
+) : (
+  <div class={`inline-flex items-center gap-2.5 ${className}`}>
+    <img
+      src="/brand/robot-head-512.png"
+      alt="Trading Yantra mark"
+      class="shrink-0 object-contain drop-shadow-[0_0_10px_rgba(45,212,191,0.25)]"
+      style={`height:${markSize}px;width:${markSize}px;`}
+      width="512"
+      height="512"
+    />
+
+    {variant === 'full' && (
+      <span class="flex flex-col leading-none select-none">
+        <span class="font-sans font-extrabold tracking-tight text-slate-50 text-lg sm:text-xl">
+          Trading<span class="text-gradient-brand">Yantra</span>
+        </span>
+        <span class="mt-0.5 font-mono text-[9px] sm:text-[10px] font-semibold tracking-widest uppercase text-slate-400">
+          AI-Powered Stock Intelligence
+        </span>
+      </span>
+    )}
+  </div>
+)}

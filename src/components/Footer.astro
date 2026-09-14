@@ -1,0 +1,84 @@
+---
+import Logo from './Logo.astro';
+
+const year = new Date().getFullYear();
+
+const productLinks = [
+  { href: '/product#ai-signals', label: 'AI & ML Signals' },
+  { href: '/product#indicators', label: 'Technical Indicators' },
+  { href: '/product#candlestick', label: 'Candlestick Intelligence' },
+  { href: '/product#patterns', label: 'Chart Pattern Research' },
+];
+
+const companyLinks = [
+  { href: '/about', label: 'About Us' },
+  { href: '/product', label: 'Product' },
+  { href: '/contact', label: 'Contact Us' },
+];
+
+const legalLinks = [
+  { href: '/disclaimer', label: 'Risk Disclaimer' },
+  { href: '/privacy-policy', label: 'Privacy Policy' },
+  { href: '/terms', label: 'Terms of Service' },
+];
+---
+
+<footer class="border-t border-line bg-ink-soft">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-14">
+    <div class="grid grid-cols-1 gap-10 md:grid-cols-[1.4fr_1fr_1fr_1fr]">
+      <div>
+        <Logo />
+        <p class="mt-4 max-w-xs text-sm leading-relaxed text-slate-400">
+          AI and machine-learning powered stock analysis for NSE &amp; BSE
+          traders — built on measured, backtested evidence, not hype.
+        </p>
+        <a
+          href="mailto:hello@tradingyantra.in"
+          class="mt-4 inline-block text-sm font-semibold text-teal-300 hover:text-teal-200"
+        >
+          hello@tradingyantra.in
+        </a>
+      </div>
+
+      <div>
+        <h3 class="text-xs font-bold uppercase tracking-widest text-slate-500">Product</h3>
+        <ul class="mt-4 space-y-3">
+          {productLinks.map((link) => (
+            <li><a href={link.href} class="text-sm text-slate-400 hover:text-white transition-colors">{link.label}</a></li>
+          ))}
+        </ul>
+      </div>
+
+      <div>
+        <h3 class="text-xs font-bold uppercase tracking-widest text-slate-500">Company</h3>
+        <ul class="mt-4 space-y-3">
+          {companyLinks.map((link) => (
+            <li><a href={link.href} class="text-sm text-slate-400 hover:text-white transition-colors">{link.label}</a></li>
+          ))}
+        </ul>
+      </div>
+
+      <div>
+        <h3 class="text-xs font-bold uppercase tracking-widest text-slate-500">Legal</h3>
+        <ul class="mt-4 space-y-3">
+          {legalLinks.map((link) => (
+            <li><a href={link.href} class="text-sm text-slate-400 hover:text-white transition-colors">{link.label}</a></li>
+          ))}
+        </ul>
+      </div>
+    </div>
+
+    <div class="mt-12 rounded-xl border border-line-soft bg-surface/60 p-4 text-xs leading-relaxed text-slate-500">
+      <strong class="text-slate-400">Risk disclaimer:</strong> Trading Yantra provides technology-driven market
+      analysis for informational and educational purposes only. It is not a SEBI-registered investment adviser
+      and nothing on this site is investment advice. Stock market investments are subject to market risk; past
+      performance and backtested results are not indicative of future returns. Please read our full
+      <a href="/disclaimer" class="underline hover:text-slate-300">disclaimer</a> before using any signal or analysis.
+    </div>
+
+    <div class="mt-8 flex flex-col-reverse items-center justify-between gap-4 border-t border-line-soft pt-8 sm:flex-row">
+      <p class="text-xs text-slate-500">© {year} Trading Yantra. All rights reserved.</p>
+      <p class="text-xs text-slate-500">Made for NSE &amp; BSE swing traders 🇮🇳</p>
+    </div>
+  </div>
+</footer>

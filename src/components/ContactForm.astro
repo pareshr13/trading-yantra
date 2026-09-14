@@ -1,0 +1,123 @@
+---
+// Static-site contact form using Web3Forms (https://web3forms.com) — a free,
+// no-backend-required form relay: it accepts a plain POST from a static page
+// and emails the submission, no server or signup flow required to try it.
+//
+// IMPORTANT: WEB3FORMS_ACCESS_KEY below is a placeholder. Get a real, free
+// access key at https://web3forms.com (takes ~30 seconds, just an email
+// address) and swap it in before going live — see README.md.
+const WEB3FORMS_ACCESS_KEY = 'YOUR_WEB3FORMS_ACCESS_KEY';
+---
+
+<form id="contact-form" class="space-y-5" data-access-key={WEB3FORMS_ACCESS_KEY}>
+  <input type="hidden" name="access_key" value={WEB3FORMS_ACCESS_KEY} />
+  <input type="hidden" name="subject" value="New message from Trading Yantra website" />
+  <input type="checkbox" name="botcheck" class="hidden" style="display:none" tabindex="-1" autocomplete="off" />
+
+  <div class="grid grid-cols-1 gap-5 sm:grid-cols-2">
+    <div>
+      <label for="name" class="block text-sm font-semibold text-slate-300">Full name</label>
+      <input
+        type="text" id="name" name="name" required autocomplete="name"
+        class="mt-2 w-full rounded-lg border border-line bg-surface px-4 py-3 text-sm text-white placeholder-slate-500 outline-none transition-colors focus:border-teal-400"
+        placeholder="Your name"
+      />
+    </div>
+    <div>
+      <label for="email" class="block text-sm font-semibold text-slate-300">Email address</label>
+      <input
+        type="email" id="email" name="email" required autocomplete="email"
+        class="mt-2 w-full rounded-lg border border-line bg-surface px-4 py-3 text-sm text-white placeholder-slate-500 outline-none transition-colors focus:border-teal-400"
+        placeholder="you@example.com"
+      />
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 gap-5 sm:grid-cols-2">
+    <div>
+      <label for="phone" class="block text-sm font-semibold text-slate-300">Phone <span class="text-slate-500 font-normal">(optional)</span></label>
+      <input
+        type="tel" id="phone" name="phone" autocomplete="tel"
+        class="mt-2 w-full rounded-lg border border-line bg-surface px-4 py-3 text-sm text-white placeholder-slate-500 outline-none transition-colors focus:border-teal-400"
+        placeholder="+91 98765 43210"
+      />
+    </div>
+    <div>
+      <label for="topic" class="block text-sm font-semibold text-slate-300">I'm reaching out about</label>
+      <select
+        id="topic" name="topic"
+        class="mt-2 w-full rounded-lg border border-line bg-surface px-4 py-3 text-sm text-white outline-none transition-colors focus:border-teal-400"
+      >
+        <option>Early access / waitlist</option>
+        <option>Product question</option>
+        <option>Partnership</option>
+        <option>Press / media</option>
+        <option>Something else</option>
+      </select>
+    </div>
+  </div>
+
+  <div>
+    <label for="message" class="block text-sm font-semibold text-slate-300">Message</label>
+    <textarea
+      id="message" name="message" required rows="5"
+      class="mt-2 w-full resize-none rounded-lg border border-line bg-surface px-4 py-3 text-sm text-white placeholder-slate-500 outline-none transition-colors focus:border-teal-400"
+      placeholder="Tell us what you're looking for..."
+    ></textarea>
+  </div>
+
+  <button
+    type="submit"
+    class="inline-flex w-full items-center justify-center gap-2 rounded-lg bg-gradient-brand px-6 py-3.5 text-sm font-bold text-ink transition-transform hover:scale-[1.01] disabled:opacity-60 sm:w-auto"
+  >
+    <span data-submit-label>Send Message</span>
+  </button>
+
+  <p data-form-status role="status" class="text-sm font-medium"></p>
+</form>
+
+<script>
+  const form = document.getElementById('contact-form') as HTMLFormElement | null;
+  const statusEl = form?.querySelector('[data-form-status]') as HTMLElement | null;
+  const submitLabel = form?.querySelector('[data-submit-label]') as HTMLElement | null;
+
+  form?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    if (!form || !statusEl || !submitLabel) return;
+
+    const accessKey = form.dataset.accessKey;
+    if (!accessKey || accessKey === 'YOUR_WEB3FORMS_ACCESS_KEY') {
+      statusEl.textContent =
+        'Form isn’t wired up yet — email us directly at hello@tradingyantra.in, or see README.md to add a free Web3Forms key.';
+      statusEl.className = 'text-sm font-medium text-amber-400';
+      return;
+    }
+
+    const originalLabel = submitLabel.textContent;
+    submitLabel.textContent = 'Sending...';
+    statusEl.textContent = '';
+
+    try {
+      const formData = new FormData(form);
+      const res = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: { Accept: 'application/json' },
+        body: formData,
+      });
+      const result = await res.json();
+
+      if (result.success) {
+        statusEl.textContent = "Thanks — we've got your message and will reply soon.";
+        statusEl.className = 'text-sm font-medium text-emerald-400';
+        form.reset();
+      } else {
+        throw new Error(result.message || 'Submission failed');
+      }
+    } catch (err) {
+      statusEl.textContent = 'Something went wrong. Please email hello@tradingyantra.in instead.';
+      statusEl.className = 'text-sm font-medium text-rose-400';
+    } finally {
+      submitLabel.textContent = originalLabel;
+    }
+  });
+</script>
