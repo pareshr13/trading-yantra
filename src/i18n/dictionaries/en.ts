@@ -99,11 +99,6 @@ export interface Dictionary {
     statsLinkText: string;
     ctaBannerTitle: string;
     ctaBannerBody: string;
-    /** Optional — only populated in English for now (see /algo-trading).
-     * hi/mr/gu leave this undefined until translated, and the teaser
-     * simply doesn't render on those locales rather than showing partial
-     * English inside a translated page. */
-    comingSoonTeaser?: { badge: string; title: string; body: string; cta: string };
   };
   about: {
     pill: string;
@@ -140,8 +135,6 @@ export interface Dictionary {
     faqs: [Faq, Faq, Faq, Faq, Faq, Faq];
     ctaTitle: string;
     ctaBody: string;
-    /** Optional — English-only for now, same reasoning as home.comingSoonTeaser. */
-    comingSoon?: { badge: string; title: string; body: string; cta: string };
   };
   contact: {
     pill: string;
@@ -180,7 +173,7 @@ export interface Dictionary {
 
 export const en: Dictionary = {
   meta: {
-    tagline: 'Simple Stock Signals, Powered by AI',
+    tagline: 'Simple Stock Analysis, Powered by AI',
   },
   nav: {
     home: 'Home',
@@ -192,7 +185,7 @@ export const en: Dictionary = {
   footer: {
     description: 'AI-powered stock signals for Indian traders — simple, honest, and built for NSE & BSE.',
     productHeading: 'What We Offer',
-    productLinks: ['AI Predictions', 'Buy/Sell Signals', 'Chart Patterns', 'Pattern Research'],
+    productLinks: ['AI Analysis', 'Market Signals', 'Chart Patterns', 'Pattern Research'],
     companyHeading: 'Company',
     aboutLink: 'About Us',
     productLink: 'What We Offer',
@@ -202,7 +195,7 @@ export const en: Dictionary = {
     privacyLink: 'Privacy Policy',
     termsLink: 'Terms of Service',
     disclaimerBoxLabel: 'Please note:',
-    disclaimerBoxBody: 'Trading Yantra is for learning and information only. We are not a registered investment adviser, and nothing here is investment advice. The stock market has risk — please read our full',
+    disclaimerBoxBody: 'Trading Yantra is for learning and information only. We are not a SEBI-registered investment adviser or research analyst, and nothing here is investment advice or a recommendation. The stock market has risk — please read our full',
     disclaimerBoxLinkText: 'disclaimer',
     madeFor: 'Made for Indian stock market traders',
     rights: 'All rights reserved.',
@@ -211,38 +204,38 @@ export const en: Dictionary = {
     illustrativeNote: 'Example screen — for illustration only.',
     liveEngineBadge: 'Live',
     sampleSignalLabel: 'Example AI signal',
-    sampleSignalValue: 'Strong Buy',
+    sampleSignalValue: 'Strongly Bullish',
     marketRegimeLabel: 'Market mood',
     marketRegimeValue: 'Going Up',
   },
   home: {
     pill: 'Made for Indian stock market traders',
-    headlinePlain: 'AI that tells you when to',
-    headlineHighlight: 'Buy, Sell, or Wait',
+    headlinePlain: 'AI that reads the stock market so you don’t have to',
+    headlineHighlight: 'guess',
     headlineEnd: '.',
-    subcopy: 'Trading Yantra studies stock charts using AI and simple, trusted rules — then gives you one clear answer. No confusing jargon. And when something doesn’t work, we tell you that too.',
+    subcopy: 'Trading Yantra studies stock charts using AI and simple, trusted rules — then gives you one clear signal: Bullish, Bearish, or Neutral. No confusing jargon. And when something doesn’t work, we tell you that too.',
     ctaPrimary: 'Join Free Waitlist',
     ctaSecondary: 'See How It Works',
-    disclaimerNote: 'For learning and information only. Not investment advice. See our',
+    disclaimerNote: 'For learning and information only. Not investment advice or a recommendation. See our',
     disclaimerLinkText: 'risk disclaimer',
     trustStrip: [
       { value: 'NSE + BSE', label: 'Both stock markets' },
       { value: '12', label: 'Candle patterns we check' },
       { value: '6+', label: 'Market signals we track' },
-      { value: 'AI + ML', label: 'Smart predictions' },
+      { value: 'AI + ML', label: 'Smart analysis' },
     ],
     featuresHeading: 'One app. Four ways we help.',
     featuresSubcopy: 'Everything in one place — no need to jump between five different apps.',
     features: [
       {
         icon: 'brain',
-        title: 'AI Predictions',
+        title: 'AI Analysis',
         description: 'Our AI studies years of stock prices and tells you what it sees — like a sharp friend who never stops watching the charts.',
       },
       {
         icon: 'chart',
-        title: 'Easy Buy/Sell Signals',
-        description: 'We check trusted market signals every day and turn them into a simple Buy, Sell, or Hold — no spreadsheets needed.',
+        title: 'Easy Market Signals',
+        description: 'We check trusted market signals every day and turn them into a simple Bullish, Bearish, or Neutral read — no spreadsheets needed.',
       },
       {
         icon: 'candlestick',
@@ -260,7 +253,7 @@ export const en: Dictionary = {
     howSteps: [
       { step: '01', title: 'We Watch the Market', body: 'Every day, we collect price data for NSE and BSE stocks automatically — so you don’t have to.' },
       { step: '02', title: 'We Check the Full Picture', body: 'Our AI and our rules look at the trend, the volume, and the pattern together — not just one number in isolation.' },
-      { step: '03', title: 'You Get a Clear Answer', body: 'You see a simple Buy, Sell, or Wait signal — with the reason behind it, in plain language.' },
+      { step: '03', title: 'You Get a Clear Answer', body: 'You see a simple Bullish, Bearish, or Neutral signal — with the reason behind it, in plain language.' },
     ],
     honestyHeading: 'Most apps only show you when they’re right.',
     honestyHighlight: 'We show you everything — even when we’re wrong.',
@@ -280,12 +273,6 @@ export const en: Dictionary = {
     statsLinkText: 'Read our disclaimer',
     ctaBannerTitle: 'Trade smarter, not harder.',
     ctaBannerBody: 'Join our free waitlist. We’ll message you the moment Trading Yantra is ready for you.',
-    comingSoonTeaser: {
-      badge: 'Coming Soon',
-      title: 'Signals that can place the trade for you.',
-      body: 'We’re building direct, secure connections to India’s most-used trading platforms — so an AI signal can become an actual order, with limits you control.',
-      cta: 'See what’s coming',
-    },
   },
   about: {
     pill: 'About Us',
@@ -300,7 +287,7 @@ export const en: Dictionary = {
     howPoints: [
       { title: 'Trusted market signals', body: 'Indicators traders have used for decades — checked fresh, every single day.' },
       { title: 'Chart pattern reading', body: 'We look for 12 well-known candlestick patterns, and check if they actually mean something right now.' },
-      { title: 'AI predictions', body: 'Our AI studies years of past stock prices to spot things a simple rule might miss.' },
+      { title: 'AI analysis', body: 'Our AI studies years of past stock prices to spot things a simple rule might miss.' },
     ],
     honestyHeading: 'We’d Rather Be Useful Than Impressive',
     honestyBody: 'When our research shows a popular pattern doesn’t really work, we say so — in the product itself, not hidden in fine print. When the market looks risky, we tell you to go slow. We’d rather earn your trust slowly than promise things we can’t deliver.',
@@ -311,7 +298,7 @@ export const en: Dictionary = {
       { icon: 'bell', title: 'Safety first', description: 'When the market is risky, we tell you to go slow — instead of treating every signal as equally safe.' },
     ],
     beforeHeading: 'Before You Rely On Anything Here',
-    beforeBody: 'Trading Yantra is a technology tool, not a registered investment adviser. Nothing here is personal investment advice. Please read our',
+    beforeBody: 'Trading Yantra is a technology tool, not a SEBI-registered investment adviser or research analyst. Nothing here is personal investment advice or a recommendation. Please read our',
     beforeLinkText: 'full risk disclaimer',
     ctaTitle: 'Want to see it for yourself?',
     ctaBody: 'Join our free waitlist and be among the first to try Trading Yantra.',
@@ -324,8 +311,8 @@ export const en: Dictionary = {
     sections: [
       {
         id: 'ai-signals',
-        eyebrow: 'AI Predictions',
-        title: 'Smart predictions, trained on real stock history',
+        eyebrow: 'AI Analysis',
+        title: 'Smart analysis, trained on real stock history',
         body: 'Our AI has studied years of NSE & BSE stock prices. It gives you a second opinion alongside our simple rule-based signals — so you’re never relying on just one method.',
         bullets: [
           'Trained on years of real price history across NSE & BSE stocks',
@@ -337,9 +324,9 @@ export const en: Dictionary = {
       },
       {
         id: 'indicators',
-        eyebrow: 'Easy Buy/Sell Signals',
-        title: 'The market signals serious traders already trust',
-        body: 'We check well-known signals — like RSI and moving averages — on your stocks every day, and turn them into a simple Buy, Sell, or Hold. No spreadsheets, no manual work.',
+        eyebrow: 'Easy Market Signals',
+        title: 'The market signals serious traders already track',
+        body: 'We check well-known signals — like RSI and moving averages — on your stocks every day, and turn them into a simple Bullish, Bearish, or Neutral read. No spreadsheets, no manual work.',
         bullets: [
           'Checks momentum — is the stock speeding up or slowing down?',
           'Checks how shaky or calm the price has been recently',
@@ -377,13 +364,13 @@ export const en: Dictionary = {
     ],
     watchlistEyebrow: 'Watchlist & Alerts',
     watchlistTitle: 'Know the moment your stocks move',
-    watchlistBody: 'Add the stocks you care about, and we’ll let you know when a Buy, Sell, or Take-Profit moment shows up — no need to keep refreshing charts all day.',
+    watchlistBody: 'Add the stocks you care about, and we’ll let you know when a signal turns Bullish, Bearish, or hits a price level you set — no need to keep refreshing charts all day.',
     watchlistNote: 'Example alerts shown above — not real or live trade data.',
     faqHeading: 'Common Questions',
     faqs: [
       {
-        q: 'Is Trading Yantra a registered investment adviser?',
-        a: 'No. Trading Yantra is a technology tool for learning and information only. We are not a registered investment adviser, and nothing here is personal investment advice. Please read our risk disclaimer before making any trading decision.',
+        q: 'Is Trading Yantra a registered investment adviser or research analyst?',
+        a: 'No. Trading Yantra is a technology tool for learning and information only. We are not a SEBI-registered investment adviser or research analyst, and nothing here is personal investment advice or a recommendation. Please read our risk disclaimer before making any trading decision.',
       },
       {
         q: 'Which markets do you cover?',
@@ -391,7 +378,7 @@ export const en: Dictionary = {
       },
       {
         q: 'How does Trading Yantra actually decide what to show me?',
-        a: 'Three things working together: trusted market signals (like RSI and moving averages), candlestick pattern reading, and AI predictions trained on years of price history.',
+        a: 'Three things working together: trusted market signals (like RSI and moving averages), candlestick pattern reading, and AI analysis trained on years of price history.',
       },
       {
         q: 'Do you really tell people when something doesn’t work?',
@@ -407,13 +394,7 @@ export const en: Dictionary = {
       },
     ],
     ctaTitle: 'Ready to trade with confidence?',
-    ctaBody: 'Join our free waitlist for early access to Trading Yantra — AI predictions, simple signals, and chart pattern alerts, all in one place.',
-    comingSoon: {
-      badge: 'Coming Soon',
-      title: 'Algo Trading',
-      body: 'Planned direct integration with India’s major trading platforms, so a signal can become an order automatically — with limits you set.',
-      cta: 'Learn more',
-    },
+    ctaBody: 'Join our free waitlist for early access to Trading Yantra — AI analysis, simple signals, and chart pattern alerts, all in one place.',
   },
   contact: {
     pill: 'Get In Touch',
