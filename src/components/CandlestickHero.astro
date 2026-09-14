@@ -3,6 +3,14 @@
 // trendline, echoing AlgoSignal's own logo animation. No JS, no image
 // request: this is the single biggest visual on the Home page and it ships
 // as ~1.5kb of inline markup.
+import type { Dictionary } from '../i18n/dictionaries';
+
+interface Props {
+  t: Dictionary;
+}
+
+const { t } = Astro.props;
+
 const candles = [
   { x: 10, h: 46, y: 130, bull: true, anim: 'candle-anim-2' },
   { x: 46, h: 66, y: 98, bull: true, anim: 'candle-anim-1' },
@@ -54,18 +62,18 @@ const candles = [
   </svg>
 
   <div class="absolute -bottom-4 -left-4 rounded-xl border border-line bg-surface px-4 py-3 shadow-xl sm:-bottom-6 sm:-left-6">
-    <p class="font-mono text-[10px] uppercase tracking-widest text-slate-500">Sample AI signal</p>
+    <p class="font-mono text-[10px] uppercase tracking-widest text-slate-400">{t.common.sampleSignalLabel}</p>
     <p class="mt-1 flex items-center gap-1.5 text-lg font-bold text-teal-300">
       <span class="h-2 w-2 rounded-full bg-teal-400 pulse-soft"></span>
-      Strong Buy
+      {t.common.sampleSignalValue}
     </p>
   </div>
 
   <div class="absolute -top-4 -right-4 rounded-xl border border-line bg-surface px-4 py-3 shadow-xl sm:-top-6 sm:-right-6">
-    <p class="font-mono text-[10px] uppercase tracking-widest text-slate-500">Market regime</p>
+    <p class="font-mono text-[10px] uppercase tracking-widest text-slate-400">{t.common.marketRegimeLabel}</p>
     <p class="mt-1 flex items-center gap-1.5 text-sm font-bold text-emerald-300">
       <span class="h-2 w-2 rounded-full bg-emerald-400 pulse-soft"></span>
-      Trending Bull
+      {t.common.marketRegimeValue}
     </p>
   </div>
 </div>

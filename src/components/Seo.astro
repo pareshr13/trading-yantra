@@ -1,28 +1,39 @@
 ---
 import { withBase } from '../utils/url';
+import { localizedPath } from '../i18n/url';
+import { locales, localeTags, type Locale } from '../i18n/config';
 
 interface Props {
   title: string;
   description: string;
-  path?: string;
+  lang: Locale;
+  /** Bare path with no locale prefix, e.g. '/', '/product' — used to build hreflang alternates. */
+  path: string;
   image?: string;
   noindex?: boolean;
   jsonLd?: Record<string, any>[];
+  /** False for English-only pages (legal, 404) that have no translated
+   * counterpart at this path — skips emitting hreflang alternates that
+   * would otherwise point at a 404. */
+  hasTranslations?: boolean;
 }
 
 const {
   title,
   description,
-  path = withBase('/'),
+  lang,
+  path,
   image = withBase('/og-image.png'),
   noindex = false,
   jsonLd = [],
+  hasTranslations = true,
 } = Astro.props;
 
 const siteUrl = Astro.site ?? new URL('https://tradingyantra.com');
-const canonicalURL = new URL(path, siteUrl);
+const canonicalURL = new URL(localizedPath(lang, path), siteUrl);
 const ogImageURL = new URL(image, siteUrl);
 const fullTitle = title.includes('Trading Yantra') ? title : `${title} | Trading Yantra`;
+const ogLocale = localeTags[lang].replace('-', '_');
 
 const orgSchema = {
   '@context': 'https://schema.org',
@@ -50,6 +61,15 @@ const schemas = [orgSchema, siteSchema, ...jsonLd];
 <link rel="canonical" href={canonicalURL} />
 {noindex && <meta name="robots" content="noindex, nofollow" />}
 
+<!-- Language alternates: this page's content exists in every locale at the
+     same bare path, so tell search engines about all of them + a default. -->
+{hasTranslations && locales.map((locale) => (
+  <link rel="alternate" hreflang={localeTags[locale]} href={new URL(localizedPath(locale, path), siteUrl)} />
+))}
+{hasTranslations && (
+  <link rel="alternate" hreflang="x-default" href={new URL(localizedPath('en', path), siteUrl)} />
+)}
+
 <!-- Open Graph -->
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="Trading Yantra" />
@@ -57,7 +77,7 @@ const schemas = [orgSchema, siteSchema, ...jsonLd];
 <meta property="og:description" content={description} />
 <meta property="og:url" content={canonicalURL} />
 <meta property="og:image" content={ogImageURL} />
-<meta property="og:locale" content="en_IN" />
+<meta property="og:locale" content={ogLocale} />
 
 <!-- Twitter -->
 <meta name="twitter:card" content="summary_large_image" />

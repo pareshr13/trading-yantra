@@ -1,12 +1,15 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { withBase } from '../utils/url';
+import { dictionaries } from '../i18n/dictionaries';
 
+const lang = 'en' as const;
+const t = dictionaries[lang];
 const title = 'Page Not Found';
 const description = 'The page you’re looking for doesn’t exist.';
 ---
 
-<BaseLayout title={title} description={description} noindex>
+<BaseLayout title={title} description={description} lang={lang} t={t} path="/404" noindex hasTranslations={false}>
   <section class="relative overflow-hidden">
     <div class="pointer-events-none absolute inset-x-0 top-0 h-[420px] bg-radial-fade"></div>
     <div class="relative mx-auto flex min-h-[70vh] max-w-2xl flex-col items-center justify-center px-4 py-20 text-center sm:px-6">

@@ -1,0 +1,15 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ContactContent from '../../components/pages/ContactContent.astro';
+import { dictionaries } from '../../i18n/dictionaries';
+import { buildContactJsonLd } from '../../i18n/jsonld';
+
+const lang = 'gu' as const;
+const t = dictionaries[lang];
+const title = t.nav.contact;
+const description = t.contact.subcopy;
+---
+
+<BaseLayout title={title} description={description} lang={lang} t={t} path="/contact" jsonLd={[buildContactJsonLd()]}>
+  <ContactContent lang={lang} t={t} />
+</BaseLayout>

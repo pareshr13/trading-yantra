@@ -1,0 +1,81 @@
+---
+import CtaBanner from '../CtaBanner.astro';
+import FeatureCard from '../FeatureCard.astro';
+import { localizedPath } from '../../i18n/url';
+import type { Locale } from '../../i18n/config';
+import type { Dictionary } from '../../i18n/dictionaries';
+
+interface Props {
+  lang: Locale;
+  t: Dictionary;
+}
+
+const { lang, t } = Astro.props;
+const a = t.about;
+---
+
+<section class="relative overflow-hidden border-b border-line">
+  <div class="pointer-events-none absolute inset-x-0 top-0 h-[420px] bg-radial-fade"></div>
+  <div class="relative mx-auto max-w-4xl px-4 py-20 text-center sm:px-6 sm:py-28 lg:px-8">
+    <p class="inline-flex items-center gap-2 rounded-full border border-line bg-surface px-3.5 py-1.5 text-xs font-semibold text-teal-300">
+      <span class="h-1.5 w-1.5 rounded-full bg-teal-400"></span>
+      {a.pill}
+    </p>
+    <h1 class="mt-6 text-4xl font-extrabold tracking-tight text-white sm:text-5xl">
+      {a.headlinePlain} <span class="text-gradient-brand">{a.headlineHighlight}</span>
+    </h1>
+    <p class="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-slate-300">
+      {a.subcopy}
+    </p>
+  </div>
+</section>
+
+<section class="mx-auto max-w-4xl px-4 py-20 sm:px-6 lg:px-8">
+  <div class="space-y-6 text-slate-300">
+    <h2 class="text-2xl font-bold text-white">{a.whyHeading}</h2>
+    <p class="text-lg leading-relaxed">{a.whyBody1}</p>
+    <p class="text-lg leading-relaxed">{a.whyBody2}</p>
+
+    <h2 class="pt-6 text-2xl font-bold text-white">{a.howHeading}</h2>
+    <p class="text-lg leading-relaxed">{a.howIntro}</p>
+    <ul class="list-disc space-y-3 pl-5 marker:text-teal-400">
+      {a.howPoints.map((p) => (
+        <li class="text-lg leading-relaxed">
+          <strong class="text-white">{p.title}</strong> — {p.body}
+        </li>
+      ))}
+    </ul>
+
+    <h2 class="pt-6 text-2xl font-bold text-white">{a.honestyHeading}</h2>
+    <p class="text-lg leading-relaxed">{a.honestyBody}</p>
+  </div>
+</section>
+
+<section class="border-y border-line bg-ink-soft">
+  <div class="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
+    <div class="mx-auto max-w-2xl text-center">
+      <h2 class="text-3xl font-extrabold tracking-tight text-white sm:text-4xl">{a.standForHeading}</h2>
+    </div>
+    <div class="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-3">
+      {a.standForCards.map((card) => (
+        <FeatureCard icon={card.icon} title={card.title} description={card.description} />
+      ))}
+    </div>
+  </div>
+</section>
+
+<section class="mx-auto max-w-4xl px-4 py-16 text-center sm:px-6 lg:px-8">
+  <h2 class="text-2xl font-bold text-white">{a.beforeHeading}</h2>
+  <p class="mx-auto mt-4 max-w-xl text-base leading-relaxed text-slate-300">
+    {a.beforeBody}{' '}
+    <a href={localizedPath('en', '/disclaimer')} class="text-teal-300 underline hover:text-teal-200">{a.beforeLinkText}</a>.
+  </p>
+</section>
+
+<CtaBanner
+  lang={lang}
+  title={a.ctaTitle}
+  description={a.ctaBody}
+  primaryLabel={t.home.ctaPrimary}
+  secondaryLabel={t.home.ctaSecondary}
+/>

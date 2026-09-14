@@ -1,8 +1,12 @@
-/* Google Fonts — same family choices as the AlgoSignal app (Inter for UI,
-   JetBrains Mono for stats/data) so Trading Yantra reads as part of the same
-   product family. Must precede the Tailwind @import: CSS only allows
-   @import rules before any other statement (aside from @charset). */
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;600;700&display=swap");
+/* Google Fonts — Inter (UI) + JetBrains Mono (stats/data) from the AlgoSignal
+   app, plus Noto Sans Devanagari (Hindi/Marathi) and Noto Sans Gujarati for
+   the site's other languages. Inter has no Indic glyphs at all, so those two
+   are appended to --font-sans below as fallbacks: the browser silently picks
+   whichever loaded font actually has the glyph for each character, so pages
+   never need to switch font-family per locale. Must precede the Tailwind
+   @import: CSS only allows @import rules before any other statement (aside
+   from @charset). */
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;600;700&family=Noto+Sans+Devanagari:wght@400;500;600;700;800&family=Noto+Sans+Gujarati:wght@400;500;600;700;800&display=swap");
 @import "tailwindcss";
 
 @theme {
@@ -16,13 +20,18 @@
   --color-line: #1f2944;
   --color-line-soft: #16203a;
 
-  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-sans: "Inter", "Noto Sans Devanagari", "Noto Sans Gujarati", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 }
 
 @layer base {
   html {
     scroll-behavior: smooth;
+    /* Modest global bump (16px -> ~17px) so the whole rem-based type scale,
+       including Tailwind's spacing/padding utilities, reads a bit larger —
+       easier for older users and small-screen readers without a one-off
+       font-size override on every component. */
+    font-size: 106%;
   }
   body {
     background-color: var(--color-ink);

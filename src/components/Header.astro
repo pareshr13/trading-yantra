@@ -1,31 +1,38 @@
 ---
 import Logo from './Logo.astro';
-import { withBase } from '../utils/url';
+import LanguageSwitcher from './LanguageSwitcher.astro';
+import { localizedPath, stripLocalePrefix } from '../i18n/url';
+import type { Locale } from '../i18n/config';
+import type { Dictionary } from '../i18n/dictionaries';
+
+interface Props {
+  lang: Locale;
+  t: Dictionary;
+}
+
+const { lang, t } = Astro.props;
 
 const navLinks = [
-  { href: '/', label: 'Home' },
-  { href: '/about', label: 'About Us' },
-  { href: '/product', label: 'Product' },
-  { href: '/contact', label: 'Contact Us' },
+  { href: '/', label: t.nav.home },
+  { href: '/about', label: t.nav.about },
+  { href: '/product', label: t.nav.product },
+  { href: '/contact', label: t.nav.contact },
 ];
 
-const currentPath = Astro.url.pathname;
-const isActive = (href: string) => {
-  const resolved = withBase(href);
-  return href === '/' ? currentPath === resolved : currentPath.startsWith(resolved);
-};
+const barePath = stripLocalePrefix(Astro.url.pathname, lang);
+const isActive = (href: string) => (href === '/' ? barePath === '/' : barePath.startsWith(href));
 ---
 
 <header class="sticky top-0 z-50 border-b border-line bg-ink/85 backdrop-blur-md">
-  <div class="mx-auto flex h-18 sm:h-20 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-    <a href={withBase('/')} class="group py-1" aria-label="Trading Yantra home">
+  <div class="mx-auto flex h-18 sm:h-20 max-w-7xl items-center justify-between gap-2 px-4 sm:px-6 lg:px-8">
+    <a href={localizedPath(lang, '/')} class="group py-1" aria-label="Trading Yantra home">
       <Logo />
     </a>
 
-    <nav class="hidden md:flex items-center gap-1" aria-label="Primary">
+    <nav class="hidden lg:flex items-center gap-1" aria-label="Primary">
       {navLinks.map((link) => (
         <a
-          href={withBase(link.href)}
+          href={localizedPath(lang, link.href)}
           class={`px-4 py-2 rounded-lg text-sm font-semibold tracking-wide transition-colors ${
             isActive(link.href)
               ? 'text-white bg-white/5'
@@ -38,19 +45,20 @@ const isActive = (href: string) => {
       ))}
     </nav>
 
-    <div class="hidden md:flex items-center">
+    <div class="hidden lg:flex items-center gap-3">
+      <LanguageSwitcher lang={lang} path={barePath} />
       <a
-        href={withBase('/contact')}
+        href={localizedPath(lang, '/contact')}
         class="inline-flex items-center gap-1.5 rounded-lg bg-gradient-brand px-4 py-2 text-sm font-bold text-ink shadow-lg shadow-teal-500/10 transition-transform hover:scale-[1.03]"
       >
-        Get Early Access
+        {t.nav.cta}
       </a>
     </div>
 
     <button
       id="mobile-menu-button"
       type="button"
-      class="md:hidden inline-flex items-center justify-center rounded-lg p-2 text-slate-200 hover:bg-white/5"
+      class="lg:hidden inline-flex items-center justify-center rounded-lg p-2 text-slate-200 hover:bg-white/5"
       aria-label="Toggle menu"
       aria-expanded="false"
       aria-controls="mobile-menu"
@@ -64,11 +72,11 @@ const isActive = (href: string) => {
     </button>
   </div>
 
-  <div id="mobile-menu" class="hidden md:hidden border-t border-line bg-ink px-4 pb-6 pt-2">
+  <div id="mobile-menu" class="hidden lg:hidden border-t border-line bg-ink px-4 pb-6 pt-2">
     <nav class="flex flex-col gap-1" aria-label="Mobile">
       {navLinks.map((link) => (
         <a
-          href={withBase(link.href)}
+          href={localizedPath(lang, link.href)}
           class={`rounded-lg px-3 py-3 text-base font-semibold ${
             isActive(link.href) ? 'text-white bg-white/5' : 'text-slate-300 hover:bg-white/5 hover:text-white'
           }`}
@@ -77,11 +85,14 @@ const isActive = (href: string) => {
         </a>
       ))}
       <a
-        href={withBase('/contact')}
+        href={localizedPath(lang, '/contact')}
         class="mt-2 inline-flex items-center justify-center gap-1.5 rounded-lg bg-gradient-brand px-4 py-3 text-base font-bold text-ink"
       >
-        Get Early Access
+        {t.nav.cta}
       </a>
+      <div class="mt-4 flex justify-center border-t border-line-soft pt-4">
+        <LanguageSwitcher lang={lang} path={barePath} class="text-sm" />
+      </div>
     </nav>
   </div>
 </header>
@@ -102,7 +113,7 @@ const isActive = (href: string) => {
 
   // Close the mobile menu automatically when the viewport grows back to desktop.
   window.addEventListener('resize', () => {
-    if (window.innerWidth >= 768 && menu && !menu.classList.contains('hidden')) {
+    if (window.innerWidth >= 1024 && menu && !menu.classList.contains('hidden')) {
       menu.classList.add('hidden');
       iconOpen?.classList.remove('hidden');
       iconClose?.classList.add('hidden');

@@ -1,0 +1,14 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import AboutContent from '../../components/pages/AboutContent.astro';
+import { dictionaries } from '../../i18n/dictionaries';
+
+const lang = 'hi' as const;
+const t = dictionaries[lang];
+const title = t.nav.about;
+const description = t.about.subcopy;
+---
+
+<BaseLayout title={title} description={description} lang={lang} t={t} path="/about">
+  <AboutContent lang={lang} t={t} />
+</BaseLayout>

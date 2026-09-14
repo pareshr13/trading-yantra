@@ -1,26 +1,36 @@
 ---
 import Logo from './Logo.astro';
-import { withBase } from '../utils/url';
+import { localizedPath } from '../i18n/url';
+import type { Locale } from '../i18n/config';
+import type { Dictionary } from '../i18n/dictionaries';
 
+interface Props {
+  lang: Locale;
+  t: Dictionary;
+}
+
+const { lang, t } = Astro.props;
 const year = new Date().getFullYear();
 
 const productLinks = [
-  { href: '/product#ai-signals', label: 'AI & ML Signals' },
-  { href: '/product#indicators', label: 'Technical Indicators' },
-  { href: '/product#candlestick', label: 'Candlestick Intelligence' },
-  { href: '/product#patterns', label: 'Chart Pattern Research' },
+  { href: '/product#ai-signals', label: t.footer.productLinks[0] },
+  { href: '/product#indicators', label: t.footer.productLinks[1] },
+  { href: '/product#candlestick', label: t.footer.productLinks[2] },
+  { href: '/product#patterns', label: t.footer.productLinks[3] },
 ];
 
 const companyLinks = [
-  { href: '/about', label: 'About Us' },
-  { href: '/product', label: 'Product' },
-  { href: '/contact', label: 'Contact Us' },
+  { href: '/about', label: t.footer.aboutLink },
+  { href: '/product', label: t.footer.productLink },
+  { href: '/contact', label: t.footer.contactLink },
 ];
 
+// Legal pages stay English-only for now (see plan) — always link to the
+// English versions no matter which locale the footer itself is rendered in.
 const legalLinks = [
-  { href: '/disclaimer', label: 'Risk Disclaimer' },
-  { href: '/privacy-policy', label: 'Privacy Policy' },
-  { href: '/terms', label: 'Terms of Service' },
+  { href: localizedPath('en', '/disclaimer'), label: t.footer.disclaimerLink },
+  { href: localizedPath('en', '/privacy-policy'), label: t.footer.privacyLink },
+  { href: localizedPath('en', '/terms'), label: t.footer.termsLink },
 ];
 ---
 
@@ -29,9 +39,8 @@ const legalLinks = [
     <div class="grid grid-cols-1 gap-10 md:grid-cols-[1.4fr_1fr_1fr_1fr]">
       <div>
         <Logo />
-        <p class="mt-4 max-w-xs text-sm leading-relaxed text-slate-400">
-          AI and machine-learning powered stock analysis for NSE &amp; BSE
-          traders — built on measured, backtested evidence, not hype.
+        <p class="mt-4 max-w-xs text-base leading-relaxed text-slate-300">
+          {t.footer.description}
         </p>
         <a
           href="mailto:aitradingyantra@gmail.com"
@@ -42,44 +51,41 @@ const legalLinks = [
       </div>
 
       <div>
-        <h3 class="text-xs font-bold uppercase tracking-widest text-slate-500">Product</h3>
+        <h3 class="text-xs font-bold uppercase tracking-widest text-slate-500">{t.footer.productHeading}</h3>
         <ul class="mt-4 space-y-3">
           {productLinks.map((link) => (
-            <li><a href={withBase(link.href)} class="text-sm text-slate-400 hover:text-white transition-colors">{link.label}</a></li>
+            <li><a href={localizedPath(lang, link.href)} class="text-sm text-slate-300 hover:text-white transition-colors">{link.label}</a></li>
           ))}
         </ul>
       </div>
 
       <div>
-        <h3 class="text-xs font-bold uppercase tracking-widest text-slate-500">Company</h3>
+        <h3 class="text-xs font-bold uppercase tracking-widest text-slate-500">{t.footer.companyHeading}</h3>
         <ul class="mt-4 space-y-3">
           {companyLinks.map((link) => (
-            <li><a href={withBase(link.href)} class="text-sm text-slate-400 hover:text-white transition-colors">{link.label}</a></li>
+            <li><a href={localizedPath(lang, link.href)} class="text-sm text-slate-300 hover:text-white transition-colors">{link.label}</a></li>
           ))}
         </ul>
       </div>
 
       <div>
-        <h3 class="text-xs font-bold uppercase tracking-widest text-slate-500">Legal</h3>
+        <h3 class="text-xs font-bold uppercase tracking-widest text-slate-500">{t.footer.legalHeading}</h3>
         <ul class="mt-4 space-y-3">
           {legalLinks.map((link) => (
-            <li><a href={withBase(link.href)} class="text-sm text-slate-400 hover:text-white transition-colors">{link.label}</a></li>
+            <li><a href={link.href} class="text-sm text-slate-300 hover:text-white transition-colors">{link.label}</a></li>
           ))}
         </ul>
       </div>
     </div>
 
-    <div class="mt-12 rounded-xl border border-line-soft bg-surface/60 p-4 text-xs leading-relaxed text-slate-500">
-      <strong class="text-slate-400">Risk disclaimer:</strong> Trading Yantra provides technology-driven market
-      analysis for informational and educational purposes only. It is not a SEBI-registered investment adviser
-      and nothing on this site is investment advice. Stock market investments are subject to market risk; past
-      performance and backtested results are not indicative of future returns. Please read our full
-      <a href={withBase('/disclaimer')} class="underline hover:text-slate-300">disclaimer</a> before using any signal or analysis.
+    <div class="mt-12 rounded-xl border border-line-soft bg-surface/60 p-4 text-sm leading-relaxed text-slate-400">
+      <strong class="text-slate-300">{t.footer.disclaimerBoxLabel}</strong> {t.footer.disclaimerBoxBody}{' '}
+      <a href={localizedPath('en', '/disclaimer')} class="underline hover:text-slate-300">{t.footer.disclaimerBoxLinkText}</a>.
     </div>
 
     <div class="mt-8 flex flex-col-reverse items-center justify-between gap-4 border-t border-line-soft pt-8 sm:flex-row">
-      <p class="text-xs text-slate-500">© {year} Trading Yantra. All rights reserved.</p>
-      <p class="text-xs text-slate-500">Made for NSE &amp; BSE swing traders 🇮🇳</p>
+      <p class="text-xs text-slate-500">© {year} Trading Yantra. {t.footer.rights}</p>
+      <p class="text-xs text-slate-500">{t.footer.madeFor} 🇮🇳</p>
     </div>
   </div>
 </footer>

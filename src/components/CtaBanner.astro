@@ -1,22 +1,25 @@
 ---
-import { withBase } from '../utils/url';
+import { localizedPath } from '../i18n/url';
+import type { Locale } from '../i18n/config';
 
 interface Props {
+  lang: Locale;
   title: string;
   description: string;
-  primaryLabel?: string;
+  primaryLabel: string;
+  secondaryLabel: string;
   primaryHref?: string;
-  secondaryLabel?: string;
   secondaryHref?: string;
 }
 
 const {
+  lang,
   title,
   description,
-  primaryLabel = 'Get Early Access',
-  primaryHref = withBase('/contact'),
-  secondaryLabel = 'Explore the Product',
-  secondaryHref = withBase('/product'),
+  primaryLabel,
+  secondaryLabel,
+  primaryHref = localizedPath(lang, '/contact'),
+  secondaryHref = localizedPath(lang, '/product'),
 } = Astro.props;
 ---
 
@@ -25,17 +28,17 @@ const {
     <div class="pointer-events-none absolute inset-0 bg-radial-fade"></div>
     <div class="relative">
       <h2 class="mx-auto max-w-2xl text-3xl font-extrabold tracking-tight text-white sm:text-4xl">{title}</h2>
-      <p class="mx-auto mt-4 max-w-xl text-base text-slate-400">{description}</p>
+      <p class="mx-auto mt-4 max-w-xl text-lg text-slate-300">{description}</p>
       <div class="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
         <a
           href={primaryHref}
-          class="inline-flex w-full items-center justify-center rounded-lg bg-gradient-brand px-6 py-3 text-sm font-bold text-ink shadow-lg shadow-teal-500/10 transition-transform hover:scale-[1.02] sm:w-auto"
+          class="inline-flex w-full items-center justify-center rounded-lg bg-gradient-brand px-7 py-3.5 text-base font-bold text-ink shadow-lg shadow-teal-500/10 transition-transform hover:scale-[1.02] sm:w-auto"
         >
           {primaryLabel}
         </a>
         <a
           href={secondaryHref}
-          class="inline-flex w-full items-center justify-center rounded-lg border border-line px-6 py-3 text-sm font-bold text-slate-200 transition-colors hover:border-teal-500/40 hover:text-white sm:w-auto"
+          class="inline-flex w-full items-center justify-center rounded-lg border border-line px-7 py-3.5 text-base font-bold text-slate-200 transition-colors hover:border-teal-500/40 hover:text-white sm:w-auto"
         >
           {secondaryLabel}
         </a>

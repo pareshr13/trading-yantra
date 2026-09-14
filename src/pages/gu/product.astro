@@ -1,0 +1,22 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ProductContent from '../../components/pages/ProductContent.astro';
+import { dictionaries } from '../../i18n/dictionaries';
+import { buildFaqJsonLd, buildSoftwareJsonLd } from '../../i18n/jsonld';
+
+const lang = 'gu' as const;
+const t = dictionaries[lang];
+const title = t.nav.product;
+const description = t.product.subcopy;
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  lang={lang}
+  t={t}
+  path="/product"
+  jsonLd={[buildSoftwareJsonLd(description), buildFaqJsonLd(t)]}
+>
+  <ProductContent lang={lang} t={t} />
+</BaseLayout>

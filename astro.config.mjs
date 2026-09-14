@@ -18,5 +18,18 @@ export default defineConfig({
     plugins: [tailwindcss()]
   },
 
+  // English keeps today's un-prefixed URLs (prefixDefaultLocale: false) so
+  // nothing already indexed moves; Hindi/Marathi/Gujarati live under
+  // /hi/, /mr/, /gu/. See src/i18n/ for the dictionaries and
+  // src/components/LanguageSwitcher.astro for how links between locales are
+  // built (getRelativeLocaleUrl, not withBase).
+  i18n: {
+    defaultLocale: 'en',
+    locales: ['en', 'hi', 'mr', 'gu'],
+    routing: {
+      prefixDefaultLocale: false,
+    },
+  },
+
   integrations: [sitemap()]
 });

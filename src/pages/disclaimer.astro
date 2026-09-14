@@ -1,11 +1,14 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { dictionaries } from '../i18n/dictionaries';
 
+const lang = 'en' as const;
+const t = dictionaries[lang];
 const title = 'Risk Disclaimer';
 const description = 'Important risk and no-advice disclaimer for Trading Yantra, an AI-powered stock analysis and informational tool for NSE & BSE traders.';
 ---
 
-<BaseLayout title={title} description={description}>
+<BaseLayout title={title} description={description} lang={lang} t={t} path="/disclaimer" hasTranslations={false}>
   <section class="mx-auto max-w-3xl px-4 py-16 sm:px-6 sm:py-20 lg:px-8">
     <h1 class="text-4xl font-extrabold tracking-tight text-white">Risk Disclaimer</h1>
     <p class="mt-3 text-sm text-slate-500">Last updated: September 2026</p>
