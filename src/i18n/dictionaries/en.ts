@@ -274,7 +274,7 @@ export const en: Dictionary = {
     cta: 'Start free',
   },
   footer: {
-    description: 'AI-powered stock market analytics for Indian traders — simple, honest, and built for NSE & BSE.',
+    description: 'Backtesting and stock market research for Indian traders — simple, honest, and built on NSE data.',
     productHeading: 'What We Offer',
     productLinks: ['Measured Evidence', 'Backtest Your Rule', 'Risk List', 'AI Analysis', 'Market Reads', 'Chart Patterns', 'Pattern Studies'],
     companyHeading: 'Company',
@@ -355,7 +355,7 @@ export const en: Dictionary = {
     howHeading: 'How Trading Yantra Works',
     howSubcopy: 'Three simple steps, every single day.',
     howSteps: [
-      { step: '01', title: 'We Watch the Market', body: 'Every day, we collect price data for NSE and BSE stocks automatically — so you don’t have to.' },
+      { step: '01', title: 'We Watch the Market', body: 'Every day, we collect end-of-day prices for NSE stocks automatically — so you don’t have to.' },
       { step: '02', title: 'We Check the Full Picture', body: 'Our AI and our rules look at the trend, the volume, and the pattern together — not just one number in isolation.' },
       { step: '03', title: 'You Get a Clear Answer', body: 'You see a simple, plain-language reading of the data — with the reason behind it.' },
     ],
@@ -639,9 +639,9 @@ export const en: Dictionary = {
         id: 'ai-signals',
         eyebrow: 'AI Analysis',
         title: 'Smart analysis, trained on real stock history',
-        body: 'Our AI has studied years of NSE & BSE stock prices. It gives you a second opinion alongside our simple rule-based readings — so you’re never relying on just one method.',
+        body: 'Our AI has studied years of NSE stock prices. It gives you a second opinion alongside our simple rule-based readings — so you’re never relying on just one method.',
         bullets: [
-          'Trained on years of real price history across NSE & BSE stocks',
+          'Trained on years of real price history across NSE stocks',
           'One more clue, not the final word — it works together with our other readings',
           'Built to provide additional analytical context, not replace your own judgement',
         ],
@@ -700,7 +700,7 @@ export const en: Dictionary = {
       },
       {
         q: 'Which markets do you cover?',
-        a: 'We cover NSE and BSE listed stocks — India’s two main stock exchanges.',
+        a: 'We cover shares listed on the NSE (the regular equity segment). Stocks listed only on the BSE are not covered at the moment.',
       },
       {
         q: 'How does Trading Yantra actually decide what to show me?',

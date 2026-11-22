@@ -1,7 +1,7 @@
 # Trading Yantra — Marketing Website
 
 Static, SEO-optimized marketing site for **Trading Yantra**, an AI/ML-powered stock
-analysis product for NSE & BSE retail traders. Built with [Astro](https://astro.build)
+analysis product for NSE retail traders. Built with [Astro](https://astro.build)
 + [Tailwind CSS v4](https://tailwindcss.com) — ships as pre-rendered static HTML with
 near-zero client-side JavaScript for the best possible Core Web Vitals / Lighthouse
 scores (a direct Google ranking factor).

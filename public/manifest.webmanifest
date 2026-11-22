@@ -1,7 +1,7 @@
 {
   "name": "Trading Yantra — AI-Powered Stock Analysis",
   "short_name": "Trading Yantra",
-  "description": "AI and machine-learning powered stock analysis and swing-trading signals for NSE & BSE traders.",
+  "description": "Backtest trading strategies on NSE data and see if they beat random stock picks.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#05070f",
