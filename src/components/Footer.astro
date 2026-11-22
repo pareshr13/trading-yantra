@@ -12,12 +12,12 @@ interface Props {
 const { lang, t } = Astro.props;
 const year = new Date().getFullYear();
 
-const productLinks = [
-  { href: localizedPath(lang, '/product#ai-signals'), label: t.footer.productLinks[0] },
-  { href: localizedPath(lang, '/product#indicators'), label: t.footer.productLinks[1] },
-  { href: localizedPath(lang, '/product#candlestick'), label: t.footer.productLinks[2] },
-  { href: localizedPath(lang, '/product#patterns'), label: t.footer.productLinks[3] },
-];
+// Anchor ids on /product, in the same order as t.footer.productLinks.
+const productAnchors = ['evidence', 'backtest', 'risk-list', 'ai-signals', 'indicators', 'candlestick', 'patterns'];
+const productLinks = productAnchors.map((id, i) => ({
+  href: localizedPath(lang, `/product#${id}`),
+  label: t.footer.productLinks[i],
+}));
 
 const companyLinks = [
   { href: '/about', label: t.footer.aboutLink },
@@ -34,58 +34,58 @@ const legalLinks = [
 ];
 ---
 
-<footer class="border-t border-line bg-ink-soft">
+<footer class="border-t border-line bg-ink-soft pb-24 lg:pb-0">
   <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-14">
     <div class="grid grid-cols-1 gap-10 md:grid-cols-[1.4fr_1fr_1fr_1fr]">
       <div>
         <Logo />
-        <p class="mt-4 max-w-xs text-base leading-relaxed text-slate-300">
+        <p class="mt-4 max-w-xs text-base leading-relaxed text-fg-soft">
           {t.footer.description}
         </p>
         <a
           href="mailto:aitradingyantra@gmail.com"
-          class="mt-4 inline-block text-sm font-semibold text-teal-300 hover:text-teal-200"
+          class="mt-4 inline-block text-sm font-semibold text-accent hover:text-accent-strong"
         >
           aitradingyantra@gmail.com
         </a>
       </div>
 
       <div>
-        <h3 class="text-xs font-bold uppercase tracking-widest text-slate-500">{t.footer.productHeading}</h3>
+        <h3 class="text-xs font-bold uppercase tracking-widest text-subtle">{t.footer.productHeading}</h3>
         <ul class="mt-4 space-y-3">
           {productLinks.map((link) => (
-            <li><a href={link.href} class="text-sm text-slate-300 hover:text-white transition-colors">{link.label}</a></li>
+            <li><a href={link.href} class="text-sm text-fg-soft hover:text-fg transition-colors">{link.label}</a></li>
           ))}
         </ul>
       </div>
 
       <div>
-        <h3 class="text-xs font-bold uppercase tracking-widest text-slate-500">{t.footer.companyHeading}</h3>
+        <h3 class="text-xs font-bold uppercase tracking-widest text-subtle">{t.footer.companyHeading}</h3>
         <ul class="mt-4 space-y-3">
           {companyLinks.map((link) => (
-            <li><a href={localizedPath(lang, link.href)} class="text-sm text-slate-300 hover:text-white transition-colors">{link.label}</a></li>
+            <li><a href={localizedPath(lang, link.href)} class="text-sm text-fg-soft hover:text-fg transition-colors">{link.label}</a></li>
           ))}
         </ul>
       </div>
 
       <div>
-        <h3 class="text-xs font-bold uppercase tracking-widest text-slate-500">{t.footer.legalHeading}</h3>
+        <h3 class="text-xs font-bold uppercase tracking-widest text-subtle">{t.footer.legalHeading}</h3>
         <ul class="mt-4 space-y-3">
           {legalLinks.map((link) => (
-            <li><a href={link.href} class="text-sm text-slate-300 hover:text-white transition-colors">{link.label}</a></li>
+            <li><a href={link.href} class="text-sm text-fg-soft hover:text-fg transition-colors">{link.label}</a></li>
           ))}
         </ul>
       </div>
     </div>
 
-    <div class="mt-12 rounded-xl border border-line-soft bg-surface/60 p-4 text-sm leading-relaxed text-slate-400">
-      <strong class="text-slate-300">{t.footer.disclaimerBoxLabel}</strong> {t.footer.disclaimerBoxBody}{' '}
-      <a href={localizedPath('en', '/disclaimer')} class="underline hover:text-slate-300">{t.footer.disclaimerBoxLinkText}</a>.
+    <div class="mt-12 rounded-xl border border-line-soft bg-surface/60 p-4 text-sm leading-relaxed text-muted">
+      <strong class="text-fg-soft">{t.footer.disclaimerBoxLabel}</strong> {t.footer.disclaimerBoxBody}{' '}
+      <a href={localizedPath('en', '/disclaimer')} class="underline hover:text-fg-soft">{t.footer.disclaimerBoxLinkText}</a>.
     </div>
 
     <div class="mt-8 flex flex-col-reverse items-center justify-between gap-4 border-t border-line-soft pt-8 sm:flex-row">
-      <p class="text-xs text-slate-500">© {year} Trading Yantra. {t.footer.rights}</p>
-      <p class="text-xs text-slate-500">{t.footer.madeFor} 🇮🇳</p>
+      <p class="text-xs text-subtle">© {year} Trading Yantra. {t.footer.rights}</p>
+      <p class="text-xs text-subtle">{t.footer.madeFor} 🇮🇳</p>
     </div>
   </div>
 </footer>

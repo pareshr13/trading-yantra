@@ -26,12 +26,12 @@ const icons: Record<string, string> = {
 
 <div class={`group relative rounded-2xl border border-line bg-surface/60 p-6 sm:p-7 transition-all hover:border-teal-500/40 hover:bg-surface ${className}`}>
   <div class="inline-flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-brand/10 ring-1 ring-inset ring-teal-500/30">
-    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.6" stroke="currentColor" class="h-6 w-6 text-teal-300">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.6" stroke="currentColor" class="h-6 w-6 text-accent">
       <path stroke-linecap="round" stroke-linejoin="round" d={icons[icon]} />
     </svg>
   </div>
-  <h3 class="mt-4 text-lg font-bold text-white">
+  <h3 class="mt-4 text-lg font-bold text-fg">
     {resolvedHref ? <a href={resolvedHref} class="after:absolute after:inset-0">{title}</a> : title}
   </h3>
-  <p class="mt-2 text-base leading-relaxed text-slate-300">{description}</p>
+  <p class="mt-2 text-base leading-relaxed text-fg-soft">{description}</p>
 </div>

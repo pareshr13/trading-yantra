@@ -32,18 +32,18 @@ const WEB3FORMS_ACCESS_KEY = '3e8bc03f-2b1f-4d46-8b80-5dd99982ce77';
 
   <div class="grid grid-cols-1 gap-5 sm:grid-cols-2">
     <div>
-      <label for="name" class="block text-sm font-semibold text-slate-300">{f.formNameLabel}</label>
+      <label for="name" class="block text-sm font-semibold text-fg-soft">{f.formNameLabel}</label>
       <input
         type="text" id="name" name="name" required autocomplete="name"
-        class="mt-2 w-full rounded-lg border border-line bg-surface px-4 py-3 text-base text-white placeholder-slate-500 outline-none transition-colors focus:border-teal-400"
+        class="mt-2 w-full rounded-lg border border-line bg-surface px-4 py-3 text-base text-fg placeholder-subtle outline-none transition-colors focus:border-teal-400"
         placeholder={f.formNamePlaceholder}
       />
     </div>
     <div>
-      <label for="email" class="block text-sm font-semibold text-slate-300">{f.formEmailLabel}</label>
+      <label for="email" class="block text-sm font-semibold text-fg-soft">{f.formEmailLabel}</label>
       <input
         type="email" id="email" name="email" required autocomplete="email"
-        class="mt-2 w-full rounded-lg border border-line bg-surface px-4 py-3 text-base text-white placeholder-slate-500 outline-none transition-colors focus:border-teal-400"
+        class="mt-2 w-full rounded-lg border border-line bg-surface px-4 py-3 text-base text-fg placeholder-subtle outline-none transition-colors focus:border-teal-400"
         placeholder={f.formEmailPlaceholder}
       />
     </div>
@@ -51,18 +51,18 @@ const WEB3FORMS_ACCESS_KEY = '3e8bc03f-2b1f-4d46-8b80-5dd99982ce77';
 
   <div class="grid grid-cols-1 gap-5 sm:grid-cols-2">
     <div>
-      <label for="phone" class="block text-sm font-semibold text-slate-300">{f.formPhoneLabel} <span class="text-slate-400 font-normal">{f.formPhoneOptional}</span></label>
+      <label for="phone" class="block text-sm font-semibold text-fg-soft">{f.formPhoneLabel} <span class="text-muted font-normal">{f.formPhoneOptional}</span></label>
       <input
         type="tel" id="phone" name="phone" autocomplete="tel"
-        class="mt-2 w-full rounded-lg border border-line bg-surface px-4 py-3 text-base text-white placeholder-slate-500 outline-none transition-colors focus:border-teal-400"
+        class="mt-2 w-full rounded-lg border border-line bg-surface px-4 py-3 text-base text-fg placeholder-subtle outline-none transition-colors focus:border-teal-400"
         placeholder={f.formPhonePlaceholder}
       />
     </div>
     <div>
-      <label for="topic" class="block text-sm font-semibold text-slate-300">{f.formTopicLabel}</label>
+      <label for="topic" class="block text-sm font-semibold text-fg-soft">{f.formTopicLabel}</label>
       <select
         id="topic" name="topic"
-        class="mt-2 w-full rounded-lg border border-line bg-surface px-4 py-3 text-base text-white outline-none transition-colors focus:border-teal-400"
+        class="mt-2 w-full rounded-lg border border-line bg-surface px-4 py-3 text-base text-fg outline-none transition-colors focus:border-teal-400"
       >
         {f.formTopicOptions.map((opt) => <option>{opt}</option>)}
       </select>
@@ -70,22 +70,22 @@ const WEB3FORMS_ACCESS_KEY = '3e8bc03f-2b1f-4d46-8b80-5dd99982ce77';
   </div>
 
   <div>
-    <label for="message" class="block text-sm font-semibold text-slate-300">{f.formMessageLabel}</label>
+    <label for="message" class="block text-sm font-semibold text-fg-soft">{f.formMessageLabel}</label>
     <textarea
       id="message" name="message" required rows="5"
-      class="mt-2 w-full resize-none rounded-lg border border-line bg-surface px-4 py-3 text-base text-white placeholder-slate-500 outline-none transition-colors focus:border-teal-400"
+      class="mt-2 w-full resize-none rounded-lg border border-line bg-surface px-4 py-3 text-base text-fg placeholder-subtle outline-none transition-colors focus:border-teal-400"
       placeholder={f.formMessagePlaceholder}
     ></textarea>
   </div>
 
-  <p class="text-xs leading-relaxed text-slate-400">
+  <p class="text-xs leading-relaxed text-muted">
     {f.formConsentNote}{' '}
-    <a href={localizedPath('en', '/privacy-policy')} class="underline hover:text-slate-300">{f.formConsentLinkText}</a>.
+    <a href={localizedPath('en', '/privacy-policy')} class="underline hover:text-fg-soft">{f.formConsentLinkText}</a>.
   </p>
 
   <button
     type="submit"
-    class="inline-flex w-full items-center justify-center gap-2 rounded-lg bg-gradient-brand px-7 py-3.5 text-base font-bold text-ink transition-transform hover:scale-[1.01] disabled:opacity-60 sm:w-auto"
+    class="inline-flex w-full items-center justify-center gap-2 rounded-lg bg-gradient-brand px-7 py-3.5 text-base font-bold text-on-brand transition-transform hover:scale-[1.01] disabled:opacity-60 sm:w-auto"
   >
     <span data-submit-label>{f.formSubmit}</span>
   </button>
@@ -105,7 +105,7 @@ const WEB3FORMS_ACCESS_KEY = '3e8bc03f-2b1f-4d46-8b80-5dd99982ce77';
     const accessKey = form.dataset.accessKey;
     if (!accessKey || accessKey === 'YOUR_WEB3FORMS_ACCESS_KEY') {
       statusEl.textContent = form.dataset.errorNotConfigured ?? 'Form not configured.';
-      statusEl.className = 'text-sm font-medium text-amber-400';
+      statusEl.className = 'text-sm font-medium text-amber-500';
       return;
     }
 
@@ -124,14 +124,14 @@ const WEB3FORMS_ACCESS_KEY = '3e8bc03f-2b1f-4d46-8b80-5dd99982ce77';
 
       if (result.success) {
         statusEl.textContent = form.dataset.success ?? 'Thanks!';
-        statusEl.className = 'text-sm font-medium text-emerald-400';
+        statusEl.className = 'text-sm font-medium text-emerald-500';
         form.reset();
       } else {
         throw new Error(result.message || 'Submission failed');
       }
     } catch (err) {
       statusEl.textContent = form.dataset.errorGeneric ?? 'Something went wrong.';
-      statusEl.className = 'text-sm font-medium text-rose-400';
+      statusEl.className = 'text-sm font-medium text-rose-500';
     } finally {
       submitLabel.textContent = originalLabel;
     }

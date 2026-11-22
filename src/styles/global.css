@@ -9,10 +9,19 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;600;700&family=Noto+Sans+Devanagari:wght@400;500;600;700;800&family=Noto+Sans+Gujarati:wght@400;500;600;700;800&display=swap");
 @import "tailwindcss";
 
+/* Theme: every colour the site uses is a semantic token below. Dark is the
+   default (and the no-JS fallback); [data-theme="light"] on <html> swaps the
+   values. BaseLayout sets data-theme before first paint from the visitor's
+   saved choice, else their OS preference; the header toggle switches it.
+   Use these tokens (text-fg, text-muted, bg-surface, border-line, ...)
+   instead of raw palette colours such as text-white or text-slate-300, so
+   both themes stay correct. For the few coloured status pills, add a
+   light: variant (e.g. bg-rose-950 light:bg-rose-50). */
+@custom-variant light (&:where([data-theme="light"], [data-theme="light"] *));
+
 @theme {
-  /* Deep navy/near-black brand background — darker and more saturated-blue
-     than Tailwind's stock slate/gray-950, to match AlgoSignal's dark theme
-     while staying distinct as its own brand ground color. */
+  /* Surfaces, darkest to lightest (dark theme): page ground, alternate
+     band, card, raised card. Deep navy rather than stock slate. */
   --color-ink: #05070f;
   --color-ink-soft: #090c19;
   --color-surface: #0e1424;
@@ -20,8 +29,42 @@
   --color-line: #1f2944;
   --color-line-soft: #16203a;
 
+  /* Text, strongest to weakest. */
+  --color-fg: #ffffff;
+  --color-fg-soft: #cbd5e1;
+  --color-muted: #94a3b8;
+  --color-subtle: #64748b;
+
+  /* Brand accent for links, eyebrows and icons. */
+  --color-accent: #5eead4;
+  --color-accent-strong: #99f6e4;
+
+  /* Text placed on the mint-to-cyan brand gradient: dark in both themes. */
+  --color-on-brand: #05070f;
+
   --font-sans: "Inter", "Noto Sans Devanagari", "Noto Sans Gujarati", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+
+/* Light theme: a cool off-white ground with white cards and slate text,
+   accent deepened to teal-700 so links pass contrast on white. */
+[data-theme="light"] {
+  color-scheme: light;
+  --color-ink: #f5f7fb;
+  --color-ink-soft: #edf1f7;
+  --color-surface: #ffffff;
+  --color-surface-soft: #f3f6fa;
+  --color-line: #d9e0ea;
+  --color-line-soft: #e7ecf3;
+  --color-fg: #0b1220;
+  --color-fg-soft: #334155;
+  --color-muted: #526079;
+  --color-subtle: #6f7c92;
+  --color-accent: #0f766e;
+  --color-accent-strong: #115e59;
+}
+[data-theme="dark"] {
+  color-scheme: dark;
 }
 
 @layer base {
@@ -35,6 +78,7 @@
   }
   body {
     background-color: var(--color-ink);
+    color: var(--color-fg-soft);
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -44,7 +88,7 @@
   }
   ::selection {
     background-color: rgba(45, 212, 191, 0.35);
-    color: #fff;
+    color: var(--color-fg);
   }
   :focus-visible {
     outline: 2px solid #2dd4bf;
@@ -52,18 +96,36 @@
   }
 }
 
+/* Brand gradient as real utilities, so variants (aria-selected:, hover:,
+   light:) work with them. */
+@utility text-gradient-brand {
+  background-image: linear-gradient(90deg, #34d399, #2dd4bf, #22d3ee);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+@utility bg-gradient-brand {
+  background-image: linear-gradient(90deg, #34d399, #2dd4bf, #22d3ee);
+}
+
 @layer utilities {
-  .text-gradient-brand {
-    background-image: linear-gradient(90deg, #34d399, #2dd4bf, #22d3ee);
-    background-clip: text;
-    -webkit-background-clip: text;
-    color: transparent;
-  }
-  .bg-gradient-brand {
-    background-image: linear-gradient(90deg, #34d399, #2dd4bf, #22d3ee);
-  }
   .bg-radial-fade {
     background-image: radial-gradient(circle at 50% 0%, rgba(45, 212, 191, 0.16), transparent 60%);
+  }
+  /* On white the bright gradient text washes out: use deeper stops. */
+  [data-theme="light"] .text-gradient-brand {
+    background-image: linear-gradient(90deg, #059669, #0d9488, #0e7490);
+  }
+  [data-theme="light"] .bg-radial-fade {
+    background-image: radial-gradient(circle at 50% 0%, rgba(13, 148, 136, 0.10), transparent 60%);
+  }
+  /* Faint grid behind hero sections: reads as a chart pane. */
+  .bg-chart-grid {
+    background-image:
+      linear-gradient(to right, color-mix(in srgb, var(--color-fg) 4%, transparent) 1px, transparent 1px),
+      linear-gradient(to bottom, color-mix(in srgb, var(--color-fg) 4%, transparent) 1px, transparent 1px);
+    background-size: 48px 48px;
+    mask-image: radial-gradient(ellipse at 50% 0%, #000 30%, transparent 75%);
   }
   .no-scrollbar {
     -ms-overflow-style: none;

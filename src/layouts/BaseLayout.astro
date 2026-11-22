@@ -6,6 +6,7 @@ import { withBase } from '../utils/url';
 import { stripLocalePrefix } from '../i18n/url';
 import { localeTags, type Locale } from '../i18n/config';
 import type { Dictionary } from '../i18n/dictionaries';
+import { localizedPath } from '../i18n/url';
 import '../styles/global.css';
 
 interface Props {
@@ -44,12 +45,27 @@ const skipToContent: Record<Locale, string> = {
 ---
 
 <!doctype html>
-<html lang={localeTags[lang]} class="scroll-smooth">
+<html lang={localeTags[lang]} class="scroll-smooth" data-theme="dark">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="generator" content={Astro.generator} />
+    <meta name="color-scheme" content="dark light" />
     <meta name="theme-color" content="#05070f" />
+    <!-- Theme before first paint: saved choice, else the OS setting. Dark is
+         the no-JS default (see global.css). Kept inline so there is no flash. -->
+    <script is:inline>
+      (function () {
+        var t;
+        try { t = localStorage.getItem('ty-theme'); } catch (e) {}
+        if (t !== 'light' && t !== 'dark') {
+          t = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+        }
+        document.documentElement.setAttribute('data-theme', t);
+        var m = document.querySelector('meta[name="theme-color"]');
+        if (m) m.setAttribute('content', t === 'light' ? '#f5f7fb' : '#05070f');
+      })();
+    </script>
 
     <link rel="icon" type="image/png" sizes="32x32" href={withBase('/favicon-32.png')} />
     <link rel="apple-touch-icon" href={withBase('/apple-touch-icon.png')} />
@@ -69,10 +85,10 @@ const skipToContent: Record<Locale, string> = {
       hasTranslations={hasTranslations}
     />
   </head>
-  <body class="bg-ink text-slate-200 antialiased">
+  <body class="bg-ink text-fg-soft antialiased">
     <a
       href="#main-content"
-      class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[100] focus:rounded-lg focus:bg-teal-400 focus:px-4 focus:py-2 focus:text-ink focus:font-bold"
+      class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[100] focus:rounded-lg focus:bg-teal-400 focus:px-4 focus:py-2 focus:text-on-brand focus:font-bold"
     >
       {skipToContent[lang]}
     </a>
@@ -81,5 +97,46 @@ const skipToContent: Record<Locale, string> = {
       <slot />
     </main>
     <Footer lang={lang} t={t} />
+
+    <!-- Mobile: a slim signup bar that appears once the hero has scrolled
+         away, and hides again while a signup form is on screen. -->
+    <div
+      id="sticky-cta"
+      class="fixed inset-x-0 bottom-0 z-40 translate-y-full border-t border-line bg-ink/95 px-4 py-3 shadow-[0_-8px_24px_rgba(0,0,0,0.25)] backdrop-blur-md transition-transform duration-300 lg:hidden"
+      style="padding-bottom: max(0.75rem, env(safe-area-inset-bottom));"
+      aria-hidden="true"
+    >
+      <a
+        href={localizedPath(lang, '/') + '#signup'}
+        data-signup-link
+        tabindex="-1"
+        class="flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-brand px-5 py-3.5 text-base font-bold text-on-brand"
+      >
+        {t.common.stickyCta}
+        <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" /></svg>
+      </a>
+    </div>
+    <script>
+      const bar = document.getElementById('sticky-cta');
+      const forms = [...document.querySelectorAll('form[data-signup]')];
+      let formVisible = false;
+      const update = () => {
+        const show = window.scrollY > 560 && !formVisible;
+        bar?.classList.toggle('translate-y-full', !show);
+        bar?.setAttribute('aria-hidden', String(!show));
+        bar?.querySelector('a')?.setAttribute('tabindex', show ? '0' : '-1');
+      };
+      if (forms.length && 'IntersectionObserver' in window) {
+        const seen = new Set<Element>();
+        const io = new IntersectionObserver((entries) => {
+          entries.forEach((e) => (e.isIntersecting ? seen.add(e.target) : seen.delete(e.target)));
+          formVisible = seen.size > 0;
+          update();
+        });
+        forms.forEach((f) => io.observe(f));
+      }
+      window.addEventListener('scroll', update, { passive: true });
+      update();
+    </script>
   </body>
 </html>

@@ -37,10 +37,10 @@ const { variant = 'full', class: className = '', markSize = 40 } = Astro.props;
 
     {variant === 'full' && (
       <span class="flex flex-col leading-none select-none">
-        <span class="font-sans font-extrabold tracking-tight text-slate-50 text-lg sm:text-xl">
+        <span class="font-sans font-extrabold tracking-tight text-fg text-[15px] min-[400px]:text-lg sm:text-xl">
           Trading<span class="text-gradient-brand">Yantra</span>
         </span>
-        <span class="mt-0.5 font-mono text-[9px] sm:text-[10px] font-semibold tracking-widest uppercase text-slate-400">
+        <span class="mt-0.5 hidden font-mono text-[9px] font-semibold uppercase tracking-widest text-muted min-[420px]:block sm:text-[10px]">
           AI-Powered Stock Intelligence
         </span>
       </span>

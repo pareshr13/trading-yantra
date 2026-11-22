@@ -1,11 +1,23 @@
 ---
-import CandlestickHero from '../CandlestickHero.astro';
-import FeatureCard from '../FeatureCard.astro';
-import StatCounter from '../StatCounter.astro';
+// Home page = landing page. One job: get a trader to enter an email.
+// Order: hero with signup → proof numbers → tabbed product tour → how the
+// verdict works → pricing → closing signup. Everything else (feature lists,
+// FAQs, the company story) lives on Product and About.
+import ProductShot from '../ProductShot.astro';
+import SignupForm from '../SignupForm.astro';
 import CtaBanner from '../CtaBanner.astro';
 import { localizedPath } from '../../i18n/url';
 import type { Locale } from '../../i18n/config';
 import type { Dictionary } from '../../i18n/dictionaries';
+import type { ImageMetadata } from 'astro';
+import type { ShowcaseId } from '../../i18n/dictionaries/en';
+
+import backtestResult from '../../assets/screens/backtest-result.png';
+import strategyBuilder from '../../assets/screens/strategy-builder.png';
+import swingEvidence from '../../assets/screens/swing-evidence.png';
+import askTradingYantra from '../../assets/screens/ask-trading-yantra.png';
+import structureParticipation from '../../assets/screens/structure-participation.png';
+import riskList from '../../assets/screens/risk-list.png';
 
 interface Props {
   lang: Locale;
@@ -14,138 +26,272 @@ interface Props {
 
 const { lang, t } = Astro.props;
 const h = t.home;
+const e = h.evidence;
+const sc = h.showcase;
+const pr = h.pricing;
+
+// The screenshot behind each tour tab, keyed by the dictionary item's id.
+const showcaseShots: Record<ShowcaseId, { src: ImageMetadata; label: string; href: string }> = {
+  'strategy-builder': { src: strategyBuilder, label: 'Strategy Builder', href: '/product#strategy-builder' },
+  evidence: { src: swingEvidence, label: 'Swing Trading', href: '/product#evidence' },
+  ask: { src: askTradingYantra, label: 'Ask the Trading Yantra', href: '/product#ask' },
+  structure: { src: structureParticipation, label: 'Structure + Participation', href: '/product#structure' },
+  'risk-list': { src: riskList, label: 'Risk List', href: '/product#risk-list' },
+};
+
+// Verdict scale, weakest to strongest; the ladder steps up as you read down.
+// CONFIRMED is dashed on purpose: a backtest can never reach it, only a
+// forward test registered in advance can.
+const ladderTones = [
+  { box: 'border-line', pill: 'bg-fg/5 text-fg-soft', indent: '' },
+  { box: 'border-rose-500/30', pill: 'bg-rose-950 text-rose-300 light:bg-rose-50 light:text-rose-700', indent: 'sm:ml-3' },
+  { box: 'border-amber-500/30', pill: 'bg-amber-950 text-amber-300 light:bg-amber-50 light:text-amber-700', indent: 'sm:ml-6' },
+  { box: 'border-teal-500/40', pill: 'bg-teal-950 text-teal-300 light:bg-teal-50 light:text-teal-700', indent: 'sm:ml-9' },
+  { box: 'border-dashed border-emerald-500/50', pill: 'bg-emerald-950 text-emerald-300 light:bg-emerald-50 light:text-emerald-700', indent: 'sm:ml-12' },
+];
+
+const check = 'M4.5 12.75l6 6 9-13.5';
+const signupHref = localizedPath(lang, '/') + '#signup';
 ---
 
-<!-- Hero -->
+<!-- Hero: headline, one-line promise, email signup, real product screen -->
 <section class="relative overflow-hidden">
-  <div class="pointer-events-none absolute inset-x-0 top-0 h-[520px] bg-radial-fade"></div>
-  <div class="mx-auto grid max-w-7xl grid-cols-1 items-center gap-12 px-4 py-16 sm:px-6 sm:py-24 lg:grid-cols-2 lg:px-8 lg:py-28">
+  <div class="pointer-events-none absolute inset-x-0 top-0 h-[640px] bg-radial-fade"></div>
+  <div class="pointer-events-none absolute inset-x-0 top-0 h-[640px] bg-chart-grid"></div>
+  <div class="relative mx-auto grid max-w-7xl grid-cols-1 items-center gap-12 px-4 pb-16 pt-12 sm:px-6 sm:pt-16 lg:grid-cols-[1fr_1.08fr] lg:gap-14 lg:px-8 lg:pb-24 lg:pt-20">
     <div>
-      <p class="fade-in-up inline-flex items-center gap-2 rounded-full border border-line bg-surface px-3.5 py-1.5 text-xs font-semibold text-teal-300">
-        <span class="h-1.5 w-1.5 rounded-full bg-teal-400"></span>
+      <p class="fade-in-up inline-flex items-center gap-2 rounded-full border border-line bg-surface px-3.5 py-1.5 text-xs font-semibold text-accent">
+        <span class="pulse-soft h-1.5 w-1.5 rounded-full bg-emerald-400"></span>
         {h.pill}
       </p>
-      <h1 class="fade-in-up mt-5 text-4xl font-extrabold tracking-tight text-white sm:text-5xl lg:text-[3.25rem] lg:leading-[1.15]" style="animation-delay:0.05s">
+      <h1 class="fade-in-up mt-5 text-[2.35rem] font-extrabold leading-[1.1] tracking-tight text-fg sm:text-5xl lg:text-[3.4rem]" style="animation-delay:0.05s">
         {h.headlinePlain} <span class="text-gradient-brand">{h.headlineHighlight}</span>{h.headlineEnd}
       </h1>
-      <p class="fade-in-up mt-6 max-w-xl text-lg leading-relaxed text-slate-300" style="animation-delay:0.1s">
+      <p class="fade-in-up mt-5 max-w-xl text-lg leading-relaxed text-fg-soft" style="animation-delay:0.1s">
         {h.subcopy}
       </p>
-      <div class="fade-in-up mt-8 flex flex-col gap-3 sm:flex-row" style="animation-delay:0.15s">
-        <a href={localizedPath(lang, '/contact')} class="inline-flex items-center justify-center rounded-lg bg-gradient-brand px-7 py-4 text-base font-bold text-ink shadow-lg shadow-teal-500/10 transition-transform hover:scale-[1.02]">
-          {h.ctaPrimary}
-        </a>
-        <a href={localizedPath(lang, '/product')} class="inline-flex items-center justify-center rounded-lg border border-line px-7 py-4 text-base font-bold text-slate-200 transition-colors hover:border-teal-500/40 hover:text-white">
-          {h.ctaSecondary}
-        </a>
+      <div class="fade-in-up mt-8" style="animation-delay:0.15s">
+        <SignupForm lang={lang} t={t} id="hero-signup" source="home-hero" />
       </div>
-      <p class="fade-in-up mt-5 text-sm text-slate-400" style="animation-delay:0.2s">
+      <p class="fade-in-up mt-5 text-xs text-subtle" style="animation-delay:0.2s">
         {h.disclaimerNote}{' '}
-        <a href={localizedPath('en', '/disclaimer')} class="underline hover:text-slate-300">{h.disclaimerLinkText}</a>.
+        <a href={localizedPath('en', '/disclaimer')} class="underline hover:text-fg-soft">{h.disclaimerLinkText}</a>.
       </p>
     </div>
 
     <div class="fade-in-up" style="animation-delay:0.1s">
-      <CandlestickHero t={t} />
-    </div>
-  </div>
-</section>
-
-<!-- Trust strip -->
-<section class="border-y border-line bg-ink-soft">
-  <div class="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
-    <div class="grid grid-cols-2 gap-6 text-center sm:grid-cols-4">
-      {h.trustStrip.map((s) => (
-        <div>
-          <p class="font-mono text-2xl font-extrabold text-white">{s.value}</p>
-          <p class="mt-1 text-xs font-medium uppercase tracking-widest text-slate-400">{s.label}</p>
+      <ProductShot src={backtestResult} alt={h.heroShotAlt} label="Backtest Your Rule" caption={h.heroShotCaption} eager glow class="lg:ml-4">
+        <!-- Callouts repeat the screen's headline numbers at a readable size. -->
+        <div class="absolute -left-3 top-16 hidden rounded-xl border border-rose-500/30 bg-surface/95 px-4 py-3 shadow-xl shadow-black/20 backdrop-blur sm:block lg:-left-8" aria-hidden="true">
+          <p class="text-[11px] font-semibold uppercase tracking-widest text-muted">{h.heroChipVerdict}</p>
+          <p class="mt-1 inline-block rounded bg-rose-950 px-2 py-1 font-mono text-sm font-extrabold tracking-wide text-rose-300 light:bg-rose-50 light:text-rose-700">WORSE THAN RANDOM</p>
+          <p class="mt-1.5 font-mono text-lg font-extrabold text-rose-400 light:text-rose-600">−0.12pp <span class="text-xs font-semibold text-muted">vs random</span></p>
         </div>
-      ))}
+        <div class="absolute -right-3 bottom-24 hidden rounded-xl border border-teal-500/30 bg-surface/95 px-4 py-3 shadow-xl shadow-black/20 backdrop-blur sm:block lg:-right-6" aria-hidden="true">
+          <p class="font-mono text-2xl font-extrabold text-fg">18,355</p>
+          <p class="text-xs font-semibold text-muted">{h.heroChipTrades} · 1,904 NSE</p>
+        </div>
+      </ProductShot>
     </div>
   </div>
 </section>
 
-<!-- Feature highlights -->
-<section class="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
-  <div class="mx-auto max-w-2xl text-center">
-    <h2 class="text-3xl font-extrabold tracking-tight text-white sm:text-4xl">{h.featuresHeading}</h2>
-    <p class="mt-4 text-lg text-slate-300">{h.featuresSubcopy}</p>
-  </div>
-
-  <div class="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-    {h.features.map((feature, i) => (
-      <FeatureCard
-        lang={lang}
-        icon={feature.icon}
-        title={feature.title}
-        description={feature.description}
-        href={['/product#ai-signals', '/product#indicators', '/product#candlestick', '/product#patterns'][i]}
-      />
+<!-- Proof numbers, styled like a quote board -->
+<section class="border-y border-line bg-ink-soft">
+  <div class="mx-auto grid max-w-7xl grid-cols-2 gap-px bg-line lg:grid-cols-4 lg:border-x lg:border-line">
+    {h.trustStrip.map((s) => (
+      <div class="bg-ink-soft px-3 py-6 text-center sm:py-7">
+        <p class="font-mono text-2xl font-extrabold tabular-nums text-fg sm:text-[1.7rem]">{s.value}</p>
+        <p class="mt-1.5 text-[11px] font-semibold uppercase tracking-widest text-muted">{s.label}</p>
+      </div>
     ))}
   </div>
 </section>
 
-<!-- How it works -->
-<section class="border-y border-line bg-ink-soft">
-  <div class="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
-    <div class="mx-auto max-w-2xl text-center">
-      <h2 class="text-3xl font-extrabold tracking-tight text-white sm:text-4xl">{h.howHeading}</h2>
-      <p class="mt-4 text-lg text-slate-300">{h.howSubcopy}</p>
+<!-- Product tour: one tab per feature, one screen at a time -->
+<section id="screens" class="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8 lg:py-24">
+  <div class="mx-auto max-w-2xl text-center">
+    <p class="text-xs font-bold uppercase tracking-widest text-accent">{sc.eyebrow}</p>
+    <h2 class="mt-3 text-3xl font-extrabold tracking-tight text-fg sm:text-4xl">
+      {sc.heading} <span class="text-gradient-brand">{sc.highlight}</span>
+    </h2>
+    <p class="mt-4 text-lg text-fg-soft">{sc.subcopy}</p>
+  </div>
+
+  <div class="mt-10" data-tabs>
+    <div class="no-scrollbar -mx-4 flex snap-x gap-2 overflow-x-auto px-4 pb-1 sm:mx-0 sm:flex-wrap sm:justify-center sm:overflow-visible sm:px-0" role="tablist" aria-label={sc.eyebrow}>
+      {sc.items.map((item, i) => (
+        <button
+          type="button"
+          role="tab"
+          id={`tab-${item.id}`}
+          aria-controls={`panel-${item.id}`}
+          aria-selected={i === 0 ? 'true' : 'false'}
+          tabindex={i === 0 ? 0 : -1}
+          data-tab
+          class="shrink-0 snap-start whitespace-nowrap rounded-full border border-line bg-surface px-4 py-2 text-sm font-semibold text-fg-soft transition-colors hover:border-accent/50 hover:text-fg aria-selected:border-transparent aria-selected:bg-gradient-brand aria-selected:text-on-brand"
+        >
+          {item.eyebrow}
+        </button>
+      ))}
     </div>
 
-    <div class="mt-14 grid grid-cols-1 gap-10 sm:grid-cols-3">
-      {h.howSteps.map((s) => (
-        <div class="relative">
-          <span class="font-mono text-5xl font-black text-white/10">{s.step}</span>
-          <h3 class="mt-2 text-xl font-bold text-white">{s.title}</h3>
-          <p class="mt-3 text-base leading-relaxed text-slate-300">{s.body}</p>
+    <div class="mt-10">
+      {sc.items.map((item, i) => (
+        <div
+          id={`panel-${item.id}`}
+          role="tabpanel"
+          aria-labelledby={`tab-${item.id}`}
+          data-panel
+          class={`grid grid-cols-1 items-center gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:gap-14 ${i === 0 ? '' : 'mt-16'}`}
+        >
+          <div>
+            <h3 class="text-2xl font-extrabold tracking-tight text-fg sm:text-3xl">{item.title}</h3>
+            <p class="mt-4 text-base leading-relaxed text-fg-soft sm:text-lg">{item.body}</p>
+            <ul class="mt-6 space-y-3">
+              {item.bullets.map((b) => (
+                <li class="flex items-start gap-3">
+                  <span class="mt-0.5 inline-flex h-5 w-5 flex-none items-center justify-center rounded-full bg-teal-500/15">
+                    <svg class="h-3.5 w-3.5 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d={check} /></svg>
+                  </span>
+                  <span class="text-base text-fg-soft">{b}</span>
+                </li>
+              ))}
+            </ul>
+            <div class="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3">
+              <a href={signupHref} data-signup-link class="inline-flex items-center gap-2 rounded-lg bg-gradient-brand px-5 py-3 text-sm font-bold text-on-brand transition-transform hover:scale-[1.02]">
+                {t.nav.cta} <span aria-hidden="true">→</span>
+              </a>
+              <a href={localizedPath(lang, showcaseShots[item.id].href)} class="text-sm font-bold text-accent transition-colors hover:text-accent-strong">
+                {sc.link} <span aria-hidden="true">→</span>
+              </a>
+            </div>
+          </div>
+          <ProductShot src={showcaseShots[item.id].src} alt={item.alt} label={showcaseShots[item.id].label} />
         </div>
       ))}
+    </div>
+    <p class="mx-auto mt-10 max-w-3xl text-center text-xs leading-relaxed text-subtle">{t.common.screenshotCaption}</p>
+  </div>
+</section>
+
+<!-- How the verdict works: the differentiator, in one card -->
+<section id="evidence" class="border-y border-line bg-ink-soft">
+  <div class="mx-auto grid max-w-7xl grid-cols-1 gap-12 px-4 py-20 sm:px-6 lg:grid-cols-2 lg:items-center lg:px-8">
+    <div>
+      <p class="text-xs font-bold uppercase tracking-widest text-accent">{e.eyebrow}</p>
+      <h2 class="mt-3 text-3xl font-extrabold tracking-tight text-fg sm:text-4xl">
+        {e.heading} <span class="text-gradient-brand">{e.highlight}</span>
+      </h2>
+      <p class="mt-5 text-lg leading-relaxed text-fg-soft">{e.body}</p>
+      <dl class="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2">
+        {e.points.slice(0, 2).map((point) => (
+          <div class="rounded-xl border border-line bg-surface p-4">
+            <dt class="text-base font-bold text-fg">{point.title}</dt>
+            <dd class="mt-1.5 text-sm leading-relaxed text-fg-soft">{point.body}</dd>
+          </div>
+        ))}
+      </dl>
+      <a href={localizedPath(lang, '/product#evidence')} class="mt-7 inline-flex items-center gap-2 text-base font-bold text-accent transition-colors hover:text-accent-strong">
+        {e.link} <span aria-hidden="true">→</span>
+      </a>
+    </div>
+
+    <div class="rounded-2xl border border-line bg-surface p-5 shadow-xl shadow-black/5 sm:p-6">
+      <p class="font-mono text-xs uppercase tracking-widest text-muted">{e.ladderLabel}</p>
+      <ol class="mt-5 space-y-3">
+        {e.ladder.map((step, i) => (
+          <li class={`rounded-xl border bg-ink-soft px-4 py-3 ${ladderTones[i].box} ${ladderTones[i].indent}`}>
+            <span class={`inline-block rounded px-2 py-1 font-mono text-[11px] font-extrabold tracking-wide ${ladderTones[i].pill}`}>{step.name}</span>
+            <p class="mt-2 text-sm leading-snug text-fg-soft">{step.note}</p>
+          </li>
+        ))}
+      </ol>
+      <p class="mt-5 text-sm leading-relaxed text-muted">{e.ladderNote}</p>
     </div>
   </div>
 </section>
 
-<!-- Honesty / differentiation -->
-<section class="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
-  <div class="grid grid-cols-1 gap-12 lg:grid-cols-2 lg:items-center">
-    <div>
-      <h2 class="text-3xl font-extrabold tracking-tight text-white sm:text-4xl">
-        {h.honestyHeading} <span class="text-gradient-brand">{h.honestyHighlight}</span>
-      </h2>
-      <p class="mt-5 text-lg leading-relaxed text-slate-300">
-        {h.honestyBody}
-      </p>
-      <ul class="mt-8 space-y-4">
-        {h.honestyPoints.map((point) => (
-          <li class="flex items-start gap-3">
-            <svg class="mt-0.5 h-5 w-5 flex-none text-teal-400" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-            <span class="text-base text-slate-300">{point}</span>
-          </li>
-        ))}
-      </ul>
-    </div>
-
-    <div class="rounded-2xl border border-line bg-surface p-8">
-      <p class="font-mono text-xs uppercase tracking-widest text-slate-400">{h.statsLabel}</p>
-      <div class="mt-8 grid grid-cols-3 gap-6">
-        {h.stats.map((s) => (
-          <StatCounter value={Number(s.value)} label={s.label} />
-        ))}
-      </div>
-      <p class="mt-8 text-sm leading-relaxed text-slate-400">
-        {h.statsNote}{' '}
-        <a href={localizedPath('en', '/disclaimer')} class="underline hover:text-slate-300">{h.statsLinkText}</a>.
-      </p>
-    </div>
+<!-- Pricing -->
+<section id="pricing" class="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8 lg:py-24">
+  <div class="mx-auto max-w-2xl text-center">
+    <p class="text-xs font-bold uppercase tracking-widest text-accent">{pr.eyebrow}</p>
+    <h2 class="mt-3 text-3xl font-extrabold tracking-tight text-fg sm:text-4xl">
+      {pr.heading} <span class="text-gradient-brand">{pr.highlight}</span>
+    </h2>
+    <p class="mt-4 text-lg text-fg-soft">{pr.subcopy}</p>
   </div>
+
+  <div class="mx-auto mt-14 grid max-w-5xl grid-cols-1 gap-6 md:grid-cols-3">
+    {pr.plans.map((plan, i) => {
+      const featured = i === 1;
+      return (
+        <div class={`relative flex flex-col rounded-2xl border bg-surface p-6 sm:p-7 ${featured ? 'border-teal-500/60 shadow-2xl shadow-teal-500/10 md:-translate-y-2' : 'border-line'}`}>
+          {featured && (
+            <span class="absolute -top-3 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full bg-gradient-brand px-3 py-1 text-xs font-bold text-on-brand">{pr.popular}</span>
+          )}
+          <h3 class="text-lg font-bold text-fg">{plan.name}</h3>
+          <p class="mt-1 text-sm text-muted">{plan.tagline}</p>
+          <p class="mt-5 flex items-baseline gap-1.5">
+            <span class="font-mono text-4xl font-extrabold tabular-nums text-fg">{plan.price}</span>
+            {i > 0 && <span class="text-sm font-semibold text-muted">{pr.perMonth}</span>}
+          </p>
+          <ul class="mt-6 flex-1 space-y-3">
+            {plan.features.map((f) => (
+              <li class="flex items-start gap-2.5 text-sm text-fg-soft">
+                <svg class="mt-0.5 h-4 w-4 flex-none text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d={check} /></svg>
+                {f}
+              </li>
+            ))}
+          </ul>
+          <a
+            href={signupHref}
+            data-signup-link
+            data-plan={['free', 'pro', 'max'][i]}
+            class={`mt-7 inline-flex w-full items-center justify-center rounded-xl px-5 py-3 text-sm font-bold transition-transform hover:scale-[1.02] ${i < 2 ? 'bg-gradient-brand text-on-brand' : 'border border-line text-fg hover:border-accent/50'}`}
+          >
+            {plan.cta}
+          </a>
+        </div>
+      );
+    })}
+  </div>
+  <p class="mx-auto mt-8 max-w-2xl text-center text-xs leading-relaxed text-subtle">{pr.note}</p>
 </section>
 
 <CtaBanner
   lang={lang}
+  t={t}
   title={h.ctaBannerTitle}
   description={h.ctaBannerBody}
-  primaryLabel={h.ctaPrimary}
   secondaryLabel={h.ctaSecondary}
+  secondaryHref={localizedPath(lang, '/product')}
+  source="home-cta"
 />
+
+<script>
+  // Tabs: progressive enhancement. Without JS every panel shows, stacked.
+  document.querySelectorAll<HTMLElement>('[data-tabs]').forEach((root) => {
+    const tabs = [...root.querySelectorAll<HTMLButtonElement>('[data-tab]')];
+    const panels = [...root.querySelectorAll<HTMLElement>('[data-panel]')];
+    const select = (i: number, focus = false) => {
+      tabs.forEach((tab, j) => {
+        tab.setAttribute('aria-selected', String(i === j));
+        tab.tabIndex = i === j ? 0 : -1;
+      });
+      panels.forEach((p, j) => {
+        p.hidden = i !== j;
+        p.classList.remove('mt-16');
+      });
+      if (focus) tabs[i].focus();
+    };
+    tabs.forEach((tab, i) => {
+      tab.addEventListener('click', () => select(i));
+      tab.addEventListener('keydown', (ev) => {
+        if (ev.key === 'ArrowRight') select((i + 1) % tabs.length, true);
+        if (ev.key === 'ArrowLeft') select((i - 1 + tabs.length) % tabs.length, true);
+      });
+    });
+    select(0);
+  });
+</script>

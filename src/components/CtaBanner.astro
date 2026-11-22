@@ -1,48 +1,47 @@
 ---
+// Closing call to action on every main page: the headline plus the email
+// signup (id="signup", the target of every "Start free" button).
+import SignupForm from './SignupForm.astro';
 import { localizedPath } from '../i18n/url';
 import type { Locale } from '../i18n/config';
+import type { Dictionary } from '../i18n/dictionaries';
 
 interface Props {
   lang: Locale;
+  t: Dictionary;
   title: string;
   description: string;
-  primaryLabel: string;
-  secondaryLabel: string;
-  primaryHref?: string;
+  secondaryLabel?: string;
   secondaryHref?: string;
+  source?: string;
 }
 
 const {
   lang,
+  t,
   title,
   description,
-  primaryLabel,
   secondaryLabel,
-  primaryHref = localizedPath(lang, '/contact'),
   secondaryHref = localizedPath(lang, '/product'),
+  source = 'cta-banner',
 } = Astro.props;
 ---
 
-<section class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16 sm:py-20">
-  <div class="relative overflow-hidden rounded-3xl border border-line bg-surface px-6 py-14 text-center sm:px-16">
+<section class="mx-auto max-w-7xl px-4 py-16 sm:px-6 sm:py-20 lg:px-8">
+  <div class="relative overflow-hidden rounded-3xl border border-line bg-surface px-5 py-12 text-center shadow-xl shadow-black/5 sm:px-12 sm:py-16">
     <div class="pointer-events-none absolute inset-0 bg-radial-fade"></div>
+    <div class="pointer-events-none absolute inset-0 bg-chart-grid opacity-60"></div>
     <div class="relative">
-      <h2 class="mx-auto max-w-2xl text-3xl font-extrabold tracking-tight text-white sm:text-4xl">{title}</h2>
-      <p class="mx-auto mt-4 max-w-xl text-lg text-slate-300">{description}</p>
-      <div class="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
-        <a
-          href={primaryHref}
-          class="inline-flex w-full items-center justify-center rounded-lg bg-gradient-brand px-7 py-3.5 text-base font-bold text-ink shadow-lg shadow-teal-500/10 transition-transform hover:scale-[1.02] sm:w-auto"
-        >
-          {primaryLabel}
-        </a>
-        <a
-          href={secondaryHref}
-          class="inline-flex w-full items-center justify-center rounded-lg border border-line px-7 py-3.5 text-base font-bold text-slate-200 transition-colors hover:border-teal-500/40 hover:text-white sm:w-auto"
-        >
-          {secondaryLabel}
-        </a>
+      <h2 class="mx-auto max-w-2xl text-3xl font-extrabold tracking-tight text-fg sm:text-4xl">{title}</h2>
+      <p class="mx-auto mt-4 max-w-xl text-lg text-fg-soft">{description}</p>
+      <div class="mt-8">
+        <SignupForm lang={lang} t={t} id="signup" source={source} align="center" />
       </div>
+      {secondaryLabel && (
+        <a href={secondaryHref} class="mt-6 inline-flex items-center gap-1.5 text-sm font-semibold text-muted transition-colors hover:text-fg">
+          {secondaryLabel} <span aria-hidden="true">→</span>
+        </a>
+      )}
     </div>
   </div>
 </section>

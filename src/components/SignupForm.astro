@@ -1,0 +1,141 @@
+---
+// One-field early-access signup (email only), used in the home hero and in
+// every page's closing CTA. Posts to the same Web3Forms relay as the contact
+// form, so signups arrive by email with the page, language and chosen plan.
+// Any element with data-plan="pro" (e.g. a pricing button) that links to a
+// signup form records that plan in the form before it scrolls there.
+import type { Dictionary } from '../i18n/dictionaries';
+import type { Locale } from '../i18n/config';
+
+interface Props {
+  lang: Locale;
+  t: Dictionary;
+  id: string;
+  source: string;        // where on the site, e.g. "home-hero"
+  size?: 'lg' | 'md';
+  align?: 'left' | 'center';
+}
+
+const { lang, t, id, source, size = 'lg', align = 'left' } = Astro.props;
+const s = t.common.signup;
+const WEB3FORMS_ACCESS_KEY = '3e8bc03f-2b1f-4d46-8b80-5dd99982ce77';
+const pad = size === 'lg' ? 'py-3.5 sm:py-4' : 'py-3';
+---
+
+<form
+  id={id}
+  data-signup
+  data-success={s.success}
+  data-error={s.error}
+  data-invalid={s.invalid}
+  data-sending={s.sending}
+  class={`w-full max-w-xl ${align === 'center' ? 'mx-auto' : ''}`}
+  novalidate
+>
+  <input type="hidden" name="access_key" value={WEB3FORMS_ACCESS_KEY} />
+  <input type="hidden" name="subject" value="Early access signup — Trading Yantra" />
+  <input type="hidden" name="from_name" value="Trading Yantra website" />
+  <input type="hidden" name="language" value={lang} />
+  <input type="hidden" name="source" value={source} />
+  <input type="hidden" name="plan" value="free" data-plan-field />
+  <input type="checkbox" name="botcheck" class="hidden" style="display:none" tabindex="-1" autocomplete="off" />
+
+  <div class="flex flex-col gap-2.5 rounded-2xl border border-line bg-surface p-2 shadow-lg shadow-black/10 focus-within:border-accent/60 sm:flex-row sm:items-center">
+    <label for={`${id}-email`} class="sr-only">{s.emailLabel}</label>
+    <input
+      id={`${id}-email`}
+      type="email"
+      name="email"
+      required
+      autocomplete="email"
+      inputmode="email"
+      placeholder={s.placeholder}
+      class={`min-w-0 flex-1 rounded-xl bg-transparent px-4 ${pad} text-base text-fg placeholder-subtle outline-none`}
+    />
+    <button
+      type="submit"
+      class={`inline-flex shrink-0 items-center justify-center gap-2 rounded-xl bg-gradient-brand px-6 ${pad} text-base font-bold text-on-brand shadow-md shadow-teal-500/20 transition-transform hover:scale-[1.02] disabled:opacity-60`}
+    >
+      <span data-label>{s.button}</span>
+      <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+      </svg>
+    </button>
+  </div>
+
+  <p class={`mt-3 flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-muted ${align === 'center' ? 'justify-center' : ''}`} data-note>
+    {s.note.split(' · ').map((part) => (
+      <span class="inline-flex items-center gap-1.5">
+        <svg class="h-4 w-4 flex-none text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+        </svg>
+        {part}
+      </span>
+    ))}
+  </p>
+  <p data-status role="status" aria-live="polite" class={`mt-3 hidden text-sm font-semibold ${align === 'center' ? 'text-center' : ''}`}></p>
+</form>
+
+<script>
+  const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+
+  function setStatus(form: HTMLFormElement, text: string, ok: boolean) {
+    const el = form.querySelector<HTMLElement>('[data-status]');
+    if (!el) return;
+    el.textContent = text;
+    el.classList.remove('hidden', 'text-emerald-500', 'text-rose-500');
+    el.classList.add(ok ? 'text-emerald-500' : 'text-rose-500');
+  }
+
+  document.querySelectorAll<HTMLFormElement>('form[data-signup]').forEach((form) => {
+    if (form.dataset.bound) return;
+    form.dataset.bound = '1';
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = form.querySelector<HTMLInputElement>('input[name="email"]');
+      const label = form.querySelector<HTMLElement>('[data-label]');
+      const button = form.querySelector<HTMLButtonElement>('button[type="submit"]');
+      if (!email || !EMAIL.test(email.value.trim())) {
+        setStatus(form, form.dataset.invalid ?? '', false);
+        email?.focus();
+        return;
+      }
+      const original = label?.textContent ?? '';
+      if (label) label.textContent = form.dataset.sending ?? '…';
+      if (button) button.disabled = true;
+      try {
+        const data = new FormData(form);
+        data.set('page', location.pathname);
+        const res = await fetch('https://api.web3forms.com/submit', {
+          method: 'POST',
+          headers: { Accept: 'application/json' },
+          body: data,
+        });
+        const out = await res.json();
+        if (!out.success) throw new Error(out.message || 'failed');
+        setStatus(form, form.dataset.success ?? '', true);
+        form.reset();
+      } catch {
+        setStatus(form, form.dataset.error ?? '', false);
+      } finally {
+        if (label) label.textContent = original;
+        if (button) button.disabled = false;
+      }
+    });
+  });
+
+  // Plan buttons (pricing cards, sticky bar) record the plan, then scroll to
+  // the target form and focus its email field.
+  document.querySelectorAll<HTMLAnchorElement>('a[data-signup-link]').forEach((a) => {
+    a.addEventListener('click', (e) => {
+      const target = document.getElementById(a.hash.slice(1)) as HTMLFormElement | null;
+      if (!target || !target.matches('form[data-signup]')) return;
+      e.preventDefault();
+      const plan = a.dataset.plan;
+      const field = target.querySelector<HTMLInputElement>('[data-plan-field]');
+      if (plan && field) field.value = plan;
+      target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      setTimeout(() => target.querySelector<HTMLInputElement>('input[name="email"]')?.focus({ preventScroll: true }), 450);
+    });
+  });
+</script>

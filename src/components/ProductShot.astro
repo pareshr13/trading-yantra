@@ -1,0 +1,47 @@
+---
+// A real screenshot from the Trading Yantra app, shown in a slim browser
+// frame. Screens live in src/assets/screens/ and were captured from the app
+// (night theme, 2x) — see README "Product screenshots" for how to refresh
+// them. astro:assets turns each PNG into resized WebP at build time.
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+
+interface Props {
+  src: ImageMetadata;
+  alt: string;
+  label: string;          // short tab label, e.g. "Backtest Your Rule"
+  caption?: string;
+  eager?: boolean;        // true for the hero image only
+  glow?: boolean;
+  class?: string;
+}
+
+const { src, alt, label, caption, eager = false, glow = false, class: className = '' } = Astro.props;
+---
+
+<figure class={`relative ${className}`}>
+  {glow && (
+    <div class="pointer-events-none absolute -inset-6 rounded-[2rem] bg-gradient-brand opacity-[0.12] blur-3xl" aria-hidden="true"></div>
+  )}
+  <div class="relative overflow-hidden rounded-2xl border border-line bg-ink shadow-2xl shadow-black/40 ring-1 ring-fg/5">
+    <div class="flex items-center gap-3 border-b border-line bg-surface px-4 py-2.5">
+      <span class="flex gap-1.5" aria-hidden="true">
+        <span class="h-2.5 w-2.5 rounded-full bg-rose-400/70"></span>
+        <span class="h-2.5 w-2.5 rounded-full bg-amber-400/70"></span>
+        <span class="h-2.5 w-2.5 rounded-full bg-emerald-400/70"></span>
+      </span>
+      <span class="truncate rounded-md bg-ink px-2.5 py-0.5 font-mono text-[11px] text-muted">Trading Yantra · {label}</span>
+    </div>
+    <Image
+      src={src}
+      alt={alt}
+      widths={[640, 960, 1280, src.width]}
+      sizes="(min-width: 1024px) 50vw, 100vw"
+      loading={eager ? 'eager' : 'lazy'}
+      fetchpriority={eager ? 'high' : 'auto'}
+      class="block h-auto w-full"
+    />
+  </div>
+  <slot />
+  {caption && <figcaption class="relative mt-3 text-xs leading-relaxed text-subtle">{caption}</figcaption>}
+</figure>

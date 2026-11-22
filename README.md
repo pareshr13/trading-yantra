@@ -15,9 +15,9 @@ resemblance; the "Trading Yantra" name, logo, and copy are a distinct new brand.
 
 | Route | Purpose |
 |---|---|
-| `/` | Home — hero, feature highlights, how-it-works, stats, CTA |
+| `/` | Home — hero, feature highlights, **Measured Evidence** (flagship USP + verdict scale), how-it-works, stats, CTA |
 | `/about` | About Us — mission, "radical honesty" philosophy, approach |
-| `/product` | Product — AI/ML signals, indicators, candlestick & pattern research, FAQ |
+| `/product` | Product — Measured Evidence, Backtest Your Rule, Risk List, Data You Can Trust, AI/ML analysis, indicators, candlestick & pattern studies, FAQ |
 | `/contact` | Contact Us — form + direct email |
 | `/disclaimer` | Risk / no-advice disclaimer (India market — SEBI-adjacent) |
 | `/privacy-policy` | Privacy policy |
@@ -66,6 +66,36 @@ npm run preview   # preview the production build locally
    privacy-respecting analytics snippet (e.g. Plausible, Fathom, or GA4) in
    `src/layouts/BaseLayout.astro` when you're ready, and update the privacy policy
    to match.
+
+## Themes and conversion
+
+- **Light and dark.** Every colour is a semantic token in
+  `src/styles/global.css` (`text-fg`, `text-fg-soft`, `text-muted`,
+  `text-subtle`, `text-accent`, `bg-ink`, `bg-surface`, `border-line`,
+  `text-on-brand`). `[data-theme="light"]` swaps their values. BaseLayout
+  picks the theme before first paint (saved choice, else the OS setting) and
+  the header toggle switches it. Don't use raw `text-white` / `text-slate-*`;
+  for coloured status pills add a `light:` variant.
+- **One goal per page: the email signup.** `SignupForm.astro` posts to
+  Web3Forms (same key as the contact form) with the page, language, plan and
+  where on the page it was submitted. Every "Start free" button links to
+  `#signup` (the closing CTA on each main page); on pages without one it
+  goes to the home page's. On phones a sticky "Test your strategy free" bar
+  appears after the hero and hides while a form is on screen.
+- **Home is a landing page:** hero + signup, proof numbers, tabbed product
+  tour, the verdict scale, pricing (launch prices from the app's plans), and
+  the closing signup. Detail lives on Product and About.
+
+## Product screenshots
+
+The home hero, the "Real screens" showcase (5 rows) and seven Product sections show real
+screens from the ai-stock-analyser app (`src/assets/screens/*.png`, captured
+20 Nov 2026, night theme, 2x). `ProductShot.astro` frames them and
+astro:assets serves them as resized WebP. To refresh them, run
+`scripts/capture-app-screens.cjs` against the running app (see the comment at
+the top of the script), then update the "as of" dates in the dictionaries.
+Leave out screens with entry/stop/target levels, position sizing or
+"actionable guidance": they read as advice (SEBI).
 
 ## Design system
 

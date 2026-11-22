@@ -17,7 +17,7 @@ const { lang, path, class: className = '' } = Astro.props;
     <a
       href={localizedPath(locale, path)}
       class={`rounded-md px-2 py-1 text-xs font-bold transition-colors ${
-        locale === lang ? 'bg-white/10 text-white' : 'text-slate-400 hover:text-white hover:bg-white/5'
+        locale === lang ? 'bg-fg/10 text-fg' : 'text-muted hover:text-fg hover:bg-fg/5'
       }`}
       aria-current={locale === lang ? 'true' : undefined}
       lang={locale}
