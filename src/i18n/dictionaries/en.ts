@@ -79,14 +79,19 @@ export interface ShowcaseBlock {
 
 // Early-access email signup (hero, closing CTA on every page, sticky bar).
 export interface SignupStrings {
+  nameLabel: string;
+  phoneLabel: string;
   emailLabel: string;
   placeholder: string;
   button: string;
   sending: string;
   success: string;
   error: string;
-  invalid: string;
+  invalid: string;         // bad email
+  invalidName: string;
+  invalidPhone: string;
   note: string;            // three short claims joined by ' · '
+  consent: string;         // says we will call / WhatsApp the number
 }
 
 export interface PricingPlan {
@@ -302,14 +307,19 @@ export const en: Dictionary = {
     marketRegimeValue: 'Uptrend',
     screenshotCaption: 'Real screen from the Trading Yantra app. Data as of 20 Nov 2026. Historical statistics for learning only, not a recommendation.',
     signup: {
+      nameLabel: 'Full name',
+      phoneLabel: 'Mobile number',
       emailLabel: 'Email address',
-      placeholder: 'Enter your email',
+      placeholder: 'Email address',
       button: 'Start free',
       sending: 'Joining…',
-      success: 'You’re on the list! We’ll email your free access as soon as your batch opens.',
+      success: 'You’re on the list! We’ll call or email you shortly to set up your free access.',
       error: 'Something went wrong. Please try again in a moment.',
       invalid: 'Please enter a valid email address.',
+      invalidName: 'Please enter your full name.',
+      invalidPhone: 'Please enter a valid 10-digit mobile number.',
       note: 'Free plan · 3 backtests a month · No card needed',
+      consent: 'We’ll call or WhatsApp you on this number to set up your account.',
     },
     stickyCta: 'Test your strategy free',
     themeToggle: 'Switch light or dark theme',

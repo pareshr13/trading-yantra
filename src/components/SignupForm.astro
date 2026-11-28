@@ -1,9 +1,13 @@
 ---
-// One-field early-access signup (email only), used in the home hero and in
-// every page's closing CTA. Posts to the same Web3Forms relay as the contact
-// form, so signups arrive by email with the page, language and chosen plan.
-// Any element with data-plan="pro" (e.g. a pricing button) that links to a
-// signup form records that plan in the form before it scrolls there.
+// Early-access signup: full name, mobile number and email, all required, so
+// the team can call or WhatsApp each signup to set up the account. Used in
+// the home hero and in every page's closing CTA. Posts to the same Web3Forms
+// relay as the contact form, so signups arrive by email with the page,
+// language and chosen plan. The mobile number is checked as an Indian
+// 10-digit mobile (starts 6–9; a leading +91, 91 or 0 is accepted) and sent
+// as "+91 XXXXX XXXXX". Any element with data-plan="pro" (e.g. a pricing
+// button) that links to a signup form records that plan in the form before
+// it scrolls there.
 import type { Dictionary } from '../i18n/dictionaries';
 import type { Locale } from '../i18n/config';
 
@@ -19,7 +23,8 @@ interface Props {
 const { lang, t, id, source, size = 'lg', align = 'left' } = Astro.props;
 const s = t.common.signup;
 const WEB3FORMS_ACCESS_KEY = '3e8bc03f-2b1f-4d46-8b80-5dd99982ce77';
-const pad = size === 'lg' ? 'py-3.5 sm:py-4' : 'py-3';
+const pad = size === 'lg' ? 'py-3.5' : 'py-3';
+const field = `w-full min-w-0 rounded-xl border border-line bg-ink-soft ${pad} text-base text-fg placeholder-subtle outline-none transition-colors focus:border-accent/70 aria-invalid:border-rose-500`;
 ---
 
 <form
@@ -28,6 +33,8 @@ const pad = size === 'lg' ? 'py-3.5 sm:py-4' : 'py-3';
   data-success={s.success}
   data-error={s.error}
   data-invalid={s.invalid}
+  data-invalid-name={s.invalidName}
+  data-invalid-phone={s.invalidPhone}
   data-sending={s.sending}
   class={`w-full max-w-xl ${align === 'center' ? 'mx-auto' : ''}`}
   novalidate
@@ -40,28 +47,63 @@ const pad = size === 'lg' ? 'py-3.5 sm:py-4' : 'py-3';
   <input type="hidden" name="plan" value="free" data-plan-field />
   <input type="checkbox" name="botcheck" class="hidden" style="display:none" tabindex="-1" autocomplete="off" />
 
-  <div class="flex flex-col gap-2.5 rounded-2xl border border-line bg-surface p-2 shadow-lg shadow-black/10 focus-within:border-accent/60 sm:flex-row sm:items-center">
-    <label for={`${id}-email`} class="sr-only">{s.emailLabel}</label>
-    <input
-      id={`${id}-email`}
-      type="email"
-      name="email"
-      required
-      autocomplete="email"
-      inputmode="email"
-      placeholder={s.placeholder}
-      class={`min-w-0 flex-1 rounded-xl bg-transparent px-4 ${pad} text-base text-fg placeholder-subtle outline-none`}
-    />
-    <button
-      type="submit"
-      class={`inline-flex shrink-0 items-center justify-center gap-2 rounded-xl bg-gradient-brand px-6 ${pad} text-base font-bold text-on-brand shadow-md shadow-teal-500/20 transition-transform hover:scale-[1.02] disabled:opacity-60`}
-    >
-      <span data-label>{s.button}</span>
-      <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
-      </svg>
-    </button>
+  <div class="grid gap-2.5 rounded-2xl border border-line bg-surface p-2.5 text-left shadow-lg shadow-black/10 sm:p-3">
+    <div class="grid gap-2.5 sm:grid-cols-2">
+      <div>
+        <label for={`${id}-name`} class="sr-only">{s.nameLabel}</label>
+        <input
+          id={`${id}-name`}
+          type="text"
+          name="name"
+          required
+          autocomplete="name"
+          maxlength="80"
+          placeholder={s.nameLabel}
+          class={`${field} px-4`}
+        />
+      </div>
+      <div class="relative">
+        <label for={`${id}-phone`} class="sr-only">{s.phoneLabel}</label>
+        <span class="pointer-events-none absolute inset-y-0 left-4 flex items-center text-base font-semibold text-muted" aria-hidden="true">+91</span>
+        <input
+          id={`${id}-phone`}
+          type="tel"
+          name="phone"
+          required
+          autocomplete="tel-national"
+          inputmode="tel"
+          maxlength="16"
+          placeholder={s.phoneLabel}
+          class={`${field} pl-14 pr-4`}
+        />
+      </div>
+    </div>
+    <div class="flex flex-col gap-2.5 sm:flex-row">
+      <label for={`${id}-email`} class="sr-only">{s.emailLabel}</label>
+      <input
+        id={`${id}-email`}
+        type="email"
+        name="email"
+        required
+        autocomplete="email"
+        inputmode="email"
+        maxlength="200"
+        placeholder={s.placeholder}
+        class={`${field} flex-1 px-4`}
+      />
+      <button
+        type="submit"
+        class={`inline-flex shrink-0 items-center justify-center gap-2 rounded-xl bg-gradient-brand px-6 ${pad} text-base font-bold text-on-brand shadow-md shadow-teal-500/20 transition-transform hover:scale-[1.02] disabled:opacity-60`}
+      >
+        <span data-label>{s.button}</span>
+        <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+        </svg>
+      </button>
+    </div>
   </div>
+
+  <p data-status role="status" aria-live="polite" class={`mt-3 hidden text-sm font-semibold ${align === 'center' ? 'text-center' : ''}`}></p>
 
   <p class={`mt-3 flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-muted ${align === 'center' ? 'justify-center' : ''}`} data-note>
     {s.note.split(' · ').map((part) => (
@@ -73,11 +115,28 @@ const pad = size === 'lg' ? 'py-3.5 sm:py-4' : 'py-3';
       </span>
     ))}
   </p>
-  <p data-status role="status" aria-live="polite" class={`mt-3 hidden text-sm font-semibold ${align === 'center' ? 'text-center' : ''}`}></p>
+  <p class={`mt-2 text-xs text-subtle ${align === 'center' ? 'text-center' : ''}`}>{s.consent}</p>
 </form>
 
 <script>
   const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+
+  // Indian mobile: 10 digits starting 6–9, after dropping spaces, dashes,
+  // brackets and a leading +91 / 91 / 0. Returns "+91 XXXXX XXXXX" or null.
+  function normalisePhone(raw: string): string | null {
+    let d = raw.replace(/[\s\-().]/g, '');
+    if (d.startsWith('+')) d = d.slice(1);
+    if (!/^\d+$/.test(d)) return null;
+    if (d.length === 12 && d.startsWith('91')) d = d.slice(2);
+    else if (d.length === 11 && d.startsWith('0')) d = d.slice(1);
+    return /^[6-9]\d{9}$/.test(d) ? `+91 ${d.slice(0, 5)} ${d.slice(5)}` : null;
+  }
+
+  // A name needs at least two letters (any script, so Hindi/Gujarati names pass).
+  function normaliseName(raw: string): string | null {
+    const n = raw.replace(/\s+/g, ' ').trim();
+    return (n.match(/\p{L}/gu) ?? []).length >= 2 ? n : null;
+  }
 
   function setStatus(form: HTMLFormElement, text: string, ok: boolean) {
     const el = form.querySelector<HTMLElement>('[data-status]');
@@ -87,24 +146,39 @@ const pad = size === 'lg' ? 'py-3.5 sm:py-4' : 'py-3';
     el.classList.add(ok ? 'text-emerald-500' : 'text-rose-500');
   }
 
+  function fail(form: HTMLFormElement, input: HTMLInputElement | null, message: string) {
+    input?.setAttribute('aria-invalid', 'true');
+    setStatus(form, message, false);
+    input?.focus();
+  }
+
   document.querySelectorAll<HTMLFormElement>('form[data-signup]').forEach((form) => {
     if (form.dataset.bound) return;
     form.dataset.bound = '1';
+    form.addEventListener('input', (e) => (e.target as HTMLElement).removeAttribute?.('aria-invalid'));
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
-      const email = form.querySelector<HTMLInputElement>('input[name="email"]');
+      const nameEl = form.querySelector<HTMLInputElement>('input[name="name"]');
+      const phoneEl = form.querySelector<HTMLInputElement>('input[name="phone"]');
+      const emailEl = form.querySelector<HTMLInputElement>('input[name="email"]');
       const label = form.querySelector<HTMLElement>('[data-label]');
       const button = form.querySelector<HTMLButtonElement>('button[type="submit"]');
-      if (!email || !EMAIL.test(email.value.trim())) {
-        setStatus(form, form.dataset.invalid ?? '', false);
-        email?.focus();
-        return;
-      }
+
+      const name = normaliseName(nameEl?.value ?? '');
+      if (!name) return fail(form, nameEl, form.dataset.invalidName ?? '');
+      const phone = normalisePhone(phoneEl?.value ?? '');
+      if (!phone) return fail(form, phoneEl, form.dataset.invalidPhone ?? '');
+      const email = (emailEl?.value ?? '').trim();
+      if (!EMAIL.test(email)) return fail(form, emailEl, form.dataset.invalid ?? '');
+
       const original = label?.textContent ?? '';
       if (label) label.textContent = form.dataset.sending ?? '…';
       if (button) button.disabled = true;
       try {
         const data = new FormData(form);
+        data.set('name', name);
+        data.set('phone', phone);
+        data.set('email', email);
         data.set('page', location.pathname);
         const res = await fetch('https://api.web3forms.com/submit', {
           method: 'POST',
@@ -125,7 +199,7 @@ const pad = size === 'lg' ? 'py-3.5 sm:py-4' : 'py-3';
   });
 
   // Plan buttons (pricing cards, sticky bar) record the plan, then scroll to
-  // the target form and focus its email field.
+  // the target form and focus its first field.
   document.querySelectorAll<HTMLAnchorElement>('a[data-signup-link]').forEach((a) => {
     a.addEventListener('click', (e) => {
       const target = document.getElementById(a.hash.slice(1)) as HTMLFormElement | null;
@@ -135,7 +209,7 @@ const pad = size === 'lg' ? 'py-3.5 sm:py-4' : 'py-3';
       const field = target.querySelector<HTMLInputElement>('[data-plan-field]');
       if (plan && field) field.value = plan;
       target.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      setTimeout(() => target.querySelector<HTMLInputElement>('input[name="email"]')?.focus({ preventScroll: true }), 450);
+      setTimeout(() => target.querySelector<HTMLInputElement>('input[name="name"]')?.focus({ preventScroll: true }), 450);
     });
   });
 </script>
