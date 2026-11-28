@@ -1,36 +1,49 @@
 ---
-// Trading Yantra logo: the wide robot-head + candlestick artwork, with the
-// wordmark beside it. Two versions of the same artwork come from the app
-// (ai-stock-analyser/frontend/public): channel_logo_light.png, tuned for
-// light backgrounds, and channel_logo_night.png for dark ones. Each theme
-// shows its own (see the `light:` variant in global.css). astro:assets turns
-// both into small WebP files at build time.
-import { Image } from 'astro:assets';
-import logoLight from '../assets/brand/logo-light.png';
-import logoNight from '../assets/brand/logo-night.png';
+// Trading Yantra mark: the AI-robot-head + candlestick artwork shared with
+// the AlgoSignal product (ai-stock-analyser/frontend/public/logo512.png),
+// copied into this project's own public/brand/ so the codebase stays fully
+// separate. Square icon crop for compact placements (header/footer); the
+// full wide banner (icon + its own candlestick chart) is available via
+// variant="banner" for larger showcase placements (e.g. a hero).
+import { withBase } from '../utils/url';
 
 interface Props {
+  variant?: 'full' | 'mark' | 'banner';
   class?: string;
-  tagline?: boolean;
+  markSize?: number;
 }
 
-const { class: className = '', tagline = true } = Astro.props;
-// Rendered at most 44px tall; width follows the artwork's ~2.45:1 ratio.
-const imgClass = 'h-7 w-auto shrink-0 min-[480px]:h-9 sm:h-11';
+const { variant = 'full', class: className = '', markSize = 40 } = Astro.props;
 ---
 
-<div class={`inline-flex items-center gap-1.5 min-[480px]:gap-2 sm:gap-2.5 ${className}`}>
-  <Image src={logoNight} alt="Trading Yantra" width={108} densities={[1, 2]} loading="eager" class={`${imgClass} light:hidden`} />
-  <Image src={logoLight} alt="Trading Yantra" width={108} densities={[1, 2]} loading="eager" class={`${imgClass} hidden light:block`} />
+{variant === 'banner' ? (
+  <img
+    src={withBase('/brand/trading-yantra-mark.png')}
+    alt="Trading Yantra — AI stock analysis"
+    class={`h-auto w-full max-w-md ${className}`}
+    width="896"
+    height="363"
+  />
+) : (
+  <div class={`inline-flex items-center gap-2.5 ${className}`}>
+    <img
+      src={withBase('/brand/robot-head-512.png')}
+      alt="Trading Yantra mark"
+      class="shrink-0 object-contain drop-shadow-[0_0_10px_rgba(45,212,191,0.25)]"
+      style={`height:${markSize}px;width:${markSize}px;`}
+      width="512"
+      height="512"
+    />
 
-  <span class="flex flex-col leading-none select-none max-[359px]:sr-only">
-    <span class="font-sans font-extrabold tracking-tight text-fg text-[14px] min-[480px]:text-lg sm:text-xl">
-      Trading<span class="text-gradient-brand">Yantra</span>
-    </span>
-    {tagline && (
-      <span class="mt-0.5 hidden font-mono text-[9px] font-semibold uppercase tracking-widest text-muted min-[560px]:block sm:text-[10px]">
-        AI-Powered Stock Intelligence
+    {variant === 'full' && (
+      <span class="flex flex-col leading-none select-none">
+        <span class="font-sans font-extrabold tracking-tight text-fg text-[15px] min-[400px]:text-lg sm:text-xl">
+          Trading<span class="text-gradient-brand">Yantra</span>
+        </span>
+        <span class="mt-0.5 hidden font-mono text-[9px] font-semibold uppercase tracking-widest text-muted min-[420px]:block sm:text-[10px]">
+          AI-Powered Stock Intelligence
+        </span>
       </span>
     )}
-  </span>
-</div>
+  </div>
+)}
