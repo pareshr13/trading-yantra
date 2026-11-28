@@ -83,9 +83,18 @@ const legalLinks = [
       <a href={localizedPath('en', '/disclaimer')} class="underline hover:text-fg-soft">{t.footer.disclaimerBoxLinkText}</a>.
     </div>
 
-    <div class="mt-8 flex flex-col-reverse items-center justify-between gap-4 border-t border-line-soft pt-8 sm:flex-row">
+    <div class="mt-8 flex flex-col items-center justify-between gap-3 border-t border-line-soft pt-8 text-center sm:flex-row sm:text-left">
       <p class="text-xs text-subtle">© {year} Trading Yantra. {t.footer.rights}</p>
       <p class="text-xs text-subtle">{t.footer.madeFor} 🇮🇳</p>
+      <p class="text-xs text-subtle">
+        {t.footer.credit}{' '}
+        <a
+          href="https://tradingaisoftware.com/"
+          target="_blank"
+          rel="noopener"
+          class="font-semibold text-muted underline-offset-2 transition-colors hover:text-accent hover:underline"
+        >tradingaisoftware.com</a>
+      </p>
     </div>
   </div>
 </footer>

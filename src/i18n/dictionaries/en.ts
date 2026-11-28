@@ -140,6 +140,7 @@ export interface Dictionary {
     disclaimerBoxBody: string;
     disclaimerBoxLinkText: string;
     madeFor: string;
+    credit: string;          // "Designed and developed by" — the link text is the domain
     rights: string;
   };
   common: {
@@ -289,6 +290,7 @@ export const en: Dictionary = {
     disclaimerBoxBody: 'Trading Yantra is for learning and information only. We are not a SEBI-registered investment adviser or research analyst, and nothing here is investment advice or a recommendation. The stock market has risk — please read our full',
     disclaimerBoxLinkText: 'disclaimer',
     madeFor: 'Made for Indian stock market traders',
+    credit: 'Designed and developed by',
     rights: 'All rights reserved.',
   },
   common: {
