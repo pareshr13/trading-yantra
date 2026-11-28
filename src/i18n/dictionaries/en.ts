@@ -289,7 +289,7 @@ export const en: Dictionary = {
     disclaimerBoxLabel: 'Please note:',
     disclaimerBoxBody: 'Trading Yantra is for learning and information only. We are not a SEBI-registered investment adviser or research analyst, and nothing here is investment advice or a recommendation. The stock market has risk — please read our full',
     disclaimerBoxLinkText: 'disclaimer',
-    madeFor: 'Made for Indian stock market traders',
+    madeFor: 'Made for Indian stock market traders & brokers',
     credit: 'Designed and developed by',
     rights: 'All rights reserved.',
   },
