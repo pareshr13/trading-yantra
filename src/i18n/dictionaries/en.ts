@@ -94,6 +94,15 @@ export interface SignupStrings {
   consent: string;         // says we will call / WhatsApp the number
 }
 
+// Cookie consent banner for Google Analytics (see CookieConsent.astro).
+export interface CookieStrings {
+  text: string;
+  accept: string;
+  decline: string;
+  policyLink: string;
+  settings: string;        // footer link that reopens the banner
+}
+
 export interface PricingPlan {
   name: string;
   price: string;
@@ -159,6 +168,7 @@ export interface Dictionary {
     signup: SignupStrings;
     stickyCta: string;
     themeToggle: string;
+    cookies: CookieStrings;
   };
   home: {
     pill: string;
@@ -323,6 +333,13 @@ export const en: Dictionary = {
     },
     stickyCta: 'Test your strategy free',
     themeToggle: 'Switch light or dark theme',
+    cookies: {
+      text: 'We\'d like to use Google Analytics cookies to see which pages are visited and where our visitors come from. Nothing is set unless you accept.',
+      accept: 'Accept',
+      decline: 'Decline',
+      policyLink: 'Privacy policy',
+      settings: 'Cookie settings',
+    },
   },
   home: {
     pill: 'Backtesting and research for NSE traders',

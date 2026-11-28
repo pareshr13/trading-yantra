@@ -123,6 +123,8 @@ const WEB3FORMS_ACCESS_KEY = '3e8bc03f-2b1f-4d46-8b80-5dd99982ce77';
       const result = await res.json();
 
       if (result.success) {
+        // GA event (only exists after cookie consent). No personal details sent.
+        (window as any).gtag?.('event', 'generate_lead', { form_type: 'contact' });
         statusEl.textContent = form.dataset.success ?? 'Thanks!';
         statusEl.className = 'text-sm font-medium text-emerald-500';
         form.reset();

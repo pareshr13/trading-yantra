@@ -187,6 +187,12 @@ const field = `w-full min-w-0 rounded-xl border border-line bg-ink-soft ${pad} t
         });
         const out = await res.json();
         if (!out.success) throw new Error(out.message || 'failed');
+        // GA event (only exists after cookie consent). No personal details sent.
+        (window as any).gtag?.('event', 'generate_lead', {
+          form_type: 'signup',
+          form_location: String(data.get('source') ?? ''),
+          plan: String(data.get('plan') ?? ''),
+        });
         setStatus(form, form.dataset.success ?? '', true);
         form.reset();
       } catch {

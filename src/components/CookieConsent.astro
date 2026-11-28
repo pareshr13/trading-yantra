@@ -1,0 +1,111 @@
+---
+// Cookie consent for Google Analytics 4. GA's script is not loaded, and no
+// cookie is set, until the visitor clicks Accept; the choice is kept in
+// localStorage ('ty-consent' = 'granted' | 'denied'). A footer button with
+// data-cookie-settings reopens the banner; withdrawing consent clears the
+// _ga cookies. Nothing renders while GA_MEASUREMENT_ID is empty.
+import { GA_MEASUREMENT_ID } from '../config/analytics';
+import { localizedPath } from '../i18n/url';
+import type { Dictionary } from '../i18n/dictionaries';
+
+interface Props {
+  t: Dictionary;
+}
+
+const { t } = Astro.props;
+const c = t.common.cookies;
+const gaId = GA_MEASUREMENT_ID;
+---
+
+{gaId && (
+  <>
+    <div
+      id="cookie-consent"
+      role="dialog"
+      aria-live="polite"
+      aria-label={c.settings}
+      hidden
+      class="fixed inset-x-3 bottom-3 z-50 mx-auto max-w-3xl rounded-2xl border border-line bg-surface p-4 shadow-2xl shadow-black/30 sm:inset-x-6 sm:bottom-6 sm:p-5"
+      style="margin-bottom: env(safe-area-inset-bottom);"
+    >
+      <div class="flex flex-col gap-4 sm:flex-row sm:items-center">
+        <p class="flex-1 text-sm leading-relaxed text-fg-soft">
+          {c.text}{' '}
+          <a href={localizedPath('en', '/privacy-policy')} class="whitespace-nowrap font-semibold text-accent underline underline-offset-2 hover:text-accent-strong">{c.policyLink}</a>
+        </p>
+        <div class="flex shrink-0 gap-2.5">
+          <button type="button" data-consent="denied" class="flex-1 rounded-xl border border-line px-5 py-2.5 text-sm font-bold text-fg transition-colors hover:border-accent/60 sm:flex-none">{c.decline}</button>
+          <button type="button" data-consent="granted" class="flex-1 rounded-xl bg-gradient-brand px-5 py-2.5 text-sm font-bold text-on-brand sm:flex-none">{c.accept}</button>
+        </div>
+      </div>
+    </div>
+
+    <script is:inline define:vars={{ gaId }}>
+      (function () {
+        var KEY = 'ty-consent';
+        var banner = document.getElementById('cookie-consent');
+        var loaded = false;
+
+        function read() { try { return localStorage.getItem(KEY); } catch (e) { return null; } }
+        function save(v) { try { localStorage.setItem(KEY, v); } catch (e) {} }
+
+        function load() {
+          if (loaded) return;
+          loaded = true;
+          window.dataLayer = window.dataLayer || [];
+          window.gtag = function () { window.dataLayer.push(arguments); };
+          window.gtag('js', new Date());
+          window.gtag('config', gaId);
+          var s = document.createElement('script');
+          s.async = true;
+          s.src = 'https://www.googletagmanager.com/gtag/js?id=' + encodeURIComponent(gaId);
+          document.head.appendChild(s);
+        }
+
+        // Remove GA's own cookies on this domain and its parent.
+        function clearGaCookies() {
+          var host = location.hostname;
+          var domains = ['', host, '.' + host, '.' + host.split('.').slice(-2).join('.')];
+          document.cookie.split(';').forEach(function (part) {
+            var name = part.split('=')[0].trim();
+            if (name.indexOf('_ga') !== 0) return;
+            domains.forEach(function (d) {
+              document.cookie = name + '=; Max-Age=0; path=/' + (d ? '; domain=' + d : '');
+            });
+          });
+        }
+
+        function show() { if (banner) banner.hidden = false; }
+        function hide() { if (banner) banner.hidden = true; }
+
+        var choice = read();
+        if (choice === 'granted') load();
+        else if (choice !== 'denied') show();
+
+        banner && banner.addEventListener('click', function (e) {
+          var btn = e.target.closest && e.target.closest('[data-consent]');
+          if (!btn) return;
+          var v = btn.getAttribute('data-consent');
+          var was = read();
+          save(v);
+          hide();
+          if (v === 'granted') load();
+          else if (was === 'granted') {
+            // Withdrawn: stop GA for the rest of this page and clear its cookies.
+            window['ga-disable-' + gaId] = true;
+            clearGaCookies();
+          }
+        });
+
+        document.addEventListener('click', function (e) {
+          var link = e.target.closest && e.target.closest('[data-cookie-settings]');
+          if (!link) return;
+          e.preventDefault();
+          show();
+          var first = banner && banner.querySelector('button');
+          if (first) first.focus();
+        });
+      })();
+    </script>
+  </>
+)}
