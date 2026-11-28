@@ -71,7 +71,7 @@ async function makeOgImage(outPath) {
       Trading<tspan fill="url(#tg)">Yantra</tspan>
     </text>
     <text x="600" y="583" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="22" font-weight="600" fill="#94a3b8" letter-spacing="2">
-      AI-POWERED STOCK ANALYSIS FOR NSE &amp; BSE TRADERS
+      BACKTEST YOUR TRADING STRATEGY ON NSE DATA
     </text>
   </svg>`;
 
